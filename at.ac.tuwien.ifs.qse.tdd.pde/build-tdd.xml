@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name ="Build TDD" default="runBuild">
+	<property name="builder" location="." />
+	<property name="topLevelElementId" value="at.ac.tuwien.ifs.qse.tdd" />
+	<property name="baseLocation" location="../../../target" />
+	<property name="base" location="${baselocation}/.." />
+	<property name="buildDirectory" location="./temp/eclipse.build" />
+	<property name="skipMaps" value="true" />
+	<property name="JavaSE-1.6" location="${sun.boot.class.path}" />
+	
+	<import file="${eclipse.pdebuild.scripts}/build.xml" />
+
+	<!-- copy projects to builder -->
+	<target name="copyProjects">
+		<delete dir="${buildDirectory}" />
+		<mkdir dir="${buildDirectory}" />
+
+		<record name="./${topLevelElementId}-build.log" loglevel="verbose" />
+		<echoproperties />
+
+		
+		<mkdir dir="${buildDirectory}/features" />
+		<copy todir="${buildDirectory}/features">
+			<fileset dir="..">
+				<include name="at.ac.tuwien.ifs.qse.tdd.feature/**" />
+				<exclude name="*/bin/**" />
+			</fileset>
+		</copy>	
+		<move file="${buildDirectory}/features/at.ac.tuwien.ifs.qse.tdd.feature" tofile="${buildDirectory}/features/at.ac.tuwien.ifs.qse.tdd"></move>
+
+		<mkdir dir="${buildDirectory}/plugins" />
+		<copy todir="${buildDirectory}/plugins">
+			<fileset dir="..">
+				<include name="at.ac.tuwien.ifs.qse.tdd/**" />
+				<exclude name="*/bin/**" />
+			</fileset>
+		</copy>	
+
+	</target>
+
+	<target name="runBuild" depends="copyProjects, main" />
+</project>
