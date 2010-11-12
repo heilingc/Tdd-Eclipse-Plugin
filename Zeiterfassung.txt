@@ -1,0 +1,17 @@
+14.10.2010 0,5 Praktikumstreffen
+17.10.2010 6   Git Plugin Downloaden und installieren
+               Repositoriy ins Eclipse geladen
+               Erstes Ausführen des Plugins
+               Codereview
+	       Maven installiert und begonnen POM zu erstellt, Ideen gesammelt
+18.10.2010 4   Entschieden Ant anstatt Maven zu verwenden
+               PDE Build File erstellt
+20.10.2010 1   Git eingerichtet und hochgeladen
+21.10.2010 0,5 Praktikumstreffen
+28.10.2010 2   Testen des Tdd Entwicklungs Plugin mit einem realen Beispiel.
+04.11.2010 6   Kontextmenü neu aufgebaut
+               Begonnen mit der Entkopplung von Model und UI
+05.11.2010 4   EclEmma Codecover Code und Javadoc überblickt
+               Begonnen mit dem Versuch eine EclEmma CodeCoverSession auszulesen.
+                
+               	   

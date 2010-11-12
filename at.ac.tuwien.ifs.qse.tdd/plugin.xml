@@ -43,6 +43,10 @@
    </extension>
    <extension
          point="org.eclipse.ui.commands">
+      <category
+            id="at.ac.tuwien.ifs.qse.tdd.commands.category"
+            name="Tdd Command Category">
+      </category>
       <command
             categoryId="at.ac.tuwien.ifs.qse.tdd.commands.category"
             id="at.ac.tuwien.ifs.qse.tdd.commands.tddPluginEnableCommand"
@@ -62,17 +66,32 @@
             id="at.ac.tuwien.ifs.qse.tdd.commands.createTestClass"
             name="Create Test/Class">
       </command>
-      <category
-            id="at.ac.tuwien.ifs.qse.tdd.commands.category"
-            name="Tdd Command Category">
-      </category>
+      <command
+            categoryId="at.ac.tuwien.ifs.qse.tdd.commands.category"
+            id="at.ac.tuwien.ifs.qse.tdd.commands.createTest"
+            name="Create Test">
+      </command>
+      <command
+            categoryId="at.ac.tuwien.ifs.qse.tdd.commands.category"
+            id="at.ac.tuwien.ifs.qse.tdd.commands.setTestType"
+            name="Set Test Type">
+         <commandParameter
+               id="org.eclipse.ui.commands.radioStateParameter"
+               name="Radio Name"
+               optional="false">
+         </commandParameter>
+         <state
+               class="org.eclipse.ui.handlers.RadioState:UnitTest"
+               id="org.eclipse.ui.commands.radioState">
+         </state>
+      </command>
+      <command
+            id="at.ac.tuwien.ifs.qse.tdd.commands.calculateCoverage"
+            name="Calculate Coverage">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
-      <handler
-            class="at.ac.tuwien.ifs.qse.tdd.handlers.TddPluginHandler"
-            commandId="at.ac.tuwien.ifs.qse.tdd.commands.tddPluginEnableCommand">
-      </handler>
       <handler
             class="at.ac.tuwien.ifs.qse.tdd.handlers.JumpToTest"
             commandId="at.ac.tuwien.ifs.qse.tdd.commands.jumpToTest">
@@ -80,6 +99,14 @@
       <handler
             class="at.ac.tuwien.ifs.qse.tdd.handlers.CreateTestClass"
             commandId="at.ac.tuwien.ifs.qse.tdd.commands.createTestClass">
+      </handler>
+      <handler
+            class="at.ac.tuwien.ifs.qse.tdd.handlers.SetTestType"
+            commandId="at.ac.tuwien.ifs.qse.tdd.commands.setTestType">
+      </handler>
+      <handler
+            class="at.ac.tuwien.ifs.qse.tdd.handlers.CalculateCoverage"
+            commandId="at.ac.tuwien.ifs.qse.tdd.commands.calculateCoverage">
       </handler>
    </extension>
    <extension
@@ -90,67 +117,202 @@
                icon="icons/Tdd.ico"
                label="Tdd">
             <command
-                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.tddPluginEnableCommand"
-                  label="Enable/Disable Tdd Plugin"
-                  mnemonic="E"
-                  style="toggle">
+                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.createTestClass"
+                  label="Create Class"
+                  mnemonic="C"
+                  style="push">
                <visibleWhen
                      checkEnabled="false">
-                  <iterate>
-                     <or>
-                        <adapt
-                              type="org.eclipse.core.resources.IProject">
-                        </adapt>
-                        <adapt
-                              type="org.eclipse.jdt.core.ICompilationUnit">
-                        </adapt>
-                     </or>
-                  </iterate>
-               </visibleWhen>
-            </command>
-            <command
-                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.jumpToTest"
-                  label="Jump to Test/Class"
-                  mnemonic="J">
-               <visibleWhen
-                     checkEnabled="false">
-                  <iterate>
-                     <adapt
-                           type="org.eclipse.jdt.core.ICompilationUnit">
-                     </adapt>
-                  </iterate>
+                  <with
+                        variable="selection">
+                     <iterate
+                           ifEmpty="false"
+                           operator="or">
+                        <and>
+                           <not>
+                              <test
+                                    forcePluginActivation="true"
+                                    property="at.ac.tuwien.ifs.qse.tdd.hasAssociatedClass">
+                              </test>
+                           </not>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.isTest">
+                           </test>
+                        </and>
+                     </iterate>
+                  </with>
                </visibleWhen>
             </command>
             <command
                   commandId="at.ac.tuwien.ifs.qse.tdd.commands.createTestClass"
-                  label="Create Test/Class"
+                  label="Create Test"
                   mnemonic="C">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <iterate
+                           ifEmpty="false"
+                           operator="or">
+                        <and>
+                           <not>
+                              <test
+                                    forcePluginActivation="true"
+                                    property="at.ac.tuwien.ifs.qse.tdd.hasAssociatedTest">
+                              </test>
+                           </not>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.isClass">
+                           </test>
+                        </and>
+                     </iterate>
+                  </with>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.jumpToTest"
+                  label="Jump to Class"
+                  mnemonic="J"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <iterate
+                           ifEmpty="false"
+                           operator="or">
+                        <and>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.hasAssociatedClass">
+                           </test>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.isTest">
+                           </test>
+                        </and>
+                     </iterate>
+                  </with>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.jumpToTest"
+                  label="Jump to Test"
+                  mnemonic="J"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <iterate
+                           ifEmpty="false"
+                           operator="or">
+                        <and>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.hasAssociatedTest">
+                           </test>
+                           <test
+                                 property="at.ac.tuwien.ifs.qse.tdd.isClass">
+                           </test>
+                        </and>
+                     </iterate>
+                  </with>
+               </visibleWhen>
+            </command>
+            <separator
+                  name="at.ac.tuwien.ifs.qse.tdd.seperator1"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.setTestType"
+                  label="Unit Test"
+                  style="radio">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <iterate
+                           ifEmpty="true"
+                           operator="or">
+                        <test
+                              forcePluginActivation="true"
+                              property="at.ac.tuwien.ifs.qse.tdd.isTest">
+                        </test>
+                     </iterate>
+                  </with>
+               </visibleWhen>
+               <parameter
+                     name="org.eclipse.ui.commands.radioStateParameter"
+                     value="UnitTest">
+               </parameter>
+            </command>
+            <command
+                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.setTestType"
+                  label="Component Test"
+                  style="radio">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <iterate
+                           ifEmpty="true"
+                           operator="or">
+                        <test
+                              forcePluginActivation="true"
+                              property="at.ac.tuwien.ifs.qse.tdd.isTest">
+                        </test>
+                     </iterate>
+                  </with>
+               </visibleWhen>
+               <parameter
+                     name="org.eclipse.ui.commands.radioStateParameter"
+                     value="ComponentTest">
+               </parameter>
+            </command>
+            <separator
+                  name="at.ac.tuwien.ifs.qse.tdd.separator2">
+            </separator>
+            <command
+                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.calculateCoverage"
+                  label="Calculate Coverage">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <iterate
+                           ifEmpty="false"
+                           operator="or">
+                        <and>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.hasAssociatedTest">
+                           </test>
+                           <test
+                                 property="at.ac.tuwien.ifs.qse.tdd.isClass">
+                           </test>
+                        </and>
+                     </iterate>
+                  </with>
+               </visibleWhen>
             </command>
          </menu>
       </menuContribution>
       <menuContribution
             locationURI="popup:#CompilationUnitEditorContext?before=additions">
-         <menu
-               icon="icons/Tdd.ico"
-               label="Tdd">
-            <command
-                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.tddPluginEnableCommand"
-                  label="Enable/Disable Tdd Plugin"
-                  mnemonic="E"
-                  style="toggle">
-            </command>
-            <command
-                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.jumpToTest"
-                  label="Jump to Test/Class"
-                  mnemonic="J">
-            </command>
-            <command
-                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.createTestClass"
-                  label="Create Test/Class"
-                  mnemonic="C">
-            </command>
-         </menu>
       </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="at.ac.tuwien.ifs.qse.tdd.propertyTester.TddPropertyTester"
+            id="at.ac.tuwien.ifs.qse.tdd.propertyTester"
+            namespace="at.ac.tuwien.ifs.qse.tdd"
+            properties="isClass,isTest,hasAssociatedClass,hasAssociatedTest"
+            type="java.lang.Object">
+      </propertyTester>
    </extension>
 
 </plugin>

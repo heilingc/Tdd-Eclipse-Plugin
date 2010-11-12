@@ -44,6 +44,7 @@ public class CoverageExecuter {
 						ICompilationUnit lwCompilationUnit = type.getCompilationUnit();
 						if(lwCompilationUnit != null)
 							//Launch the coverage
+							
 							launchShortcut.launch(new StructuredSelection(lwCompilationUnit), LAUNCH_MODE); //$NON-NLS-1$
 					}
 				

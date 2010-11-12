@@ -24,7 +24,6 @@ public class CoverageFullBuilderVisitor implements IResourceVisitor {
    */
   public boolean visit(IResource resource) throws CoreException {
     
-   
     if (resource instanceof IFile && resource.getName().endsWith(".java")) { 
       IFile file = (IFile) resource;
       fileList.add(file);

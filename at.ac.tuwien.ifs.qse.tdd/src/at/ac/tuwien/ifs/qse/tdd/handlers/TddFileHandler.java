@@ -85,27 +85,6 @@ public abstract class TddFileHandler extends AbstractHandler implements IElement
 			}
 		}
 
-		if(unit == null) {
-
-			IWorkbench workbench = PlatformUI.getWorkbench(); 
-			if (workbench == null) 
-				return null;
-
-			IWorkbenchWindow activeWorkbenchWindow = workbench.getActiveWorkbenchWindow(); 
-			IWorkbenchPage page = activeWorkbenchWindow.getActivePage();
-
-			if(page.getActiveEditor() == null || page.getActiveEditor().getEditorInput() == null) {
-				return null;
-			}
-			IJavaElement element = JavaUI.getEditorInputJavaElement(page.getActiveEditor().getEditorInput());
-
-			if (element instanceof ICompilationUnit) {
-				unit = (ICompilationUnit) element;
-			} else {
-				return null;
-			}
-		}
-
 		return unit;
 
 	}

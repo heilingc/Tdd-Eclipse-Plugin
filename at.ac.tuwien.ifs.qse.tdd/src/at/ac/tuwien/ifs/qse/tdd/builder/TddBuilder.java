@@ -26,6 +26,7 @@ import at.ac.tuwien.ifs.qse.tdd.finder.CoverageFullBuilderVisitor;
 import at.ac.tuwien.ifs.qse.tdd.finder.TestFinder;
 import at.ac.tuwien.ifs.qse.tdd.finder.TestFinder.FILETYPE;
 import at.ac.tuwien.ifs.qse.tdd.finder.TestFinder.SEARCHSCOPE;
+import at.ac.tuwien.ifs.qse.tdd.model.TddTestClass;
 import at.ac.tuwien.ifs.qse.tdd.preferences.PreferenceConstants;
 
 
@@ -83,15 +84,12 @@ public class TddBuilder extends IncrementalProjectBuilder implements IHandleExce
 		
 		CoverageFullBuilderVisitor coverageVisitor = new CoverageFullBuilderVisitor();
 	    project.accept(coverageVisitor);
-
+	    
 	    if (coverageVisitor.getFileList().size() == 0) {
 	      return;
 	    }
-	    //Load the preferences
-		String prefix = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_PREFIX);
-		String suffix = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_SUFFIX);
-	    
-		TestFinder finder = new TestFinder(prefix,suffix);
+
+		TestFinder finder = new TestFinder(TddTestClass.getPrefix(),TddTestClass.getSuffix());
 	    CoverageExecuter executer = new CoverageExecuter();
 	    
 	    List<IType> types = new ArrayList<IType>();
@@ -147,12 +145,8 @@ public class TddBuilder extends IncrementalProjectBuilder implements IHandleExce
 	    if (coverageVisitor.getFileList().size() == 0) {
 	      return;
 	    }
-	   	    
-	    //Load the preferences
-		String prefix = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_PREFIX);
-		String suffix = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_SUFFIX);
-	    
-		TestFinder finder = new TestFinder(prefix,suffix);
+	   	        
+		TestFinder finder = new TestFinder(TddTestClass.getPrefix(),TddTestClass.getSuffix());
 	    CoverageExecuter executer = new CoverageExecuter();
 	    
 	    List<IType> types = new ArrayList<IType>();

@@ -1,0 +1,120 @@
+1 
+28.10. Founded 
+28.10. Resolved
+
+Description:
+
+Es wurde einmal CodeCoverage durchgeführt. 
+Danach wurden ein paar enter eingegeben. Die Makierungen durch CodeCover verschwanden.
+Durch das Speichern entstand folgender Fehler
+
+  eclipse.buildId=unknown
+java.version=1.6.0_21
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=de_AT
+Framework arguments:  -product org.eclipse.platform.ide
+Command-line arguments:  -product org.eclipse.platform.ide -data C:\Projektpraktikum\workspace/../runtime-EclipseApplication -dev file:C:/Projektpraktikum/workspace/.metadata/.plugins/org.eclipse.pde.core/Eclipse Application/dev.properties -os win32 -ws win32 -arch x86
+
+
+Error
+Thu Oct 28 00:43:12 CEST 2010
+An internal error occurred during: "Building workspace".
+
+java.lang.Error: Unresolved compilation problems:
+The import com.mountainminds cannot be resolved
+CoverageLaunchShortcut cannot be resolved to a type
+CoverageLaunchShortcut cannot be resolved to a type
+CoverageLaunchShortcut cannot be resolved to a type
+CoverageLaunchShortcut cannot be resolved to a type
+CoverageLaunchShortcut cannot be resolved to a type
+CoverageLaunchShortcut cannot be resolved to a type
+
+at at.ac.tuwien.ifs.qse.tdd.finder.CoverageExecuter.<init>(CoverageExecuter.java:16)
+at at.ac.tuwien.ifs.qse.tdd.builder.TddBuilder.incrementalBuild(TddBuilder.java:156)
+at at.ac.tuwien.ifs.qse.tdd.builder.TddBuilder.build(TddBuilder.java:62)
+at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:627)
+at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:170)
+at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:201)
+at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:253)
+at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:256)
+at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:309)
+at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:341)
+at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:140)
+at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:238)
+at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+
+
+eclipse.buildId=unknown
+java.version=1.6.0_21
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=de_AT
+Framework arguments:  -product org.eclipse.platform.ide
+Command-line arguments:  -product org.eclipse.platform.ide -data C:\Projektpraktikum\workspace/../runtime-EclipseApplication -dev file:C:/Projektpraktikum/workspace/.metadata/.plugins/org.eclipse.pde.core/Eclipse Application/dev.properties -os win32 -ws win32 -arch x86
+
+
+Warning
+Thu Oct 28 00:42:33 CEST 2010
+NLS missing message: CoverageViewColumnMissedBlocks_label in: com.mountainminds.eclemma.internal.ui.uimessages
+
+Solution:
+
+Die Dependency für ECL Emma verwies auf ein Package welches nicht existierte. Die Dependency wurde nun auf das richtige Package gesetzt.
+
+2. 
+28.10. Founded
+28.10. Verworfen
+
+Es wurde einmal Speichern gedrückt. Daraufhin wurde der Buildprozess gestartet. Es wurde eine Messagebox vom Tdd Plugin ausgegeben, 
+dass keine Testklasse gefunden werden kann, obwohl eine Existierte.
+
+Lösung:
+Die Testklasse wurde falsch benannt, nämlich StackTest anstatt TestStack.
+
+3. 
+28.10. Founded
+
+Es wurde einmal Speichern gedrückt. Daraufhin wurde der Buildprozess gestartet. Es wurde eine Messagebox vom Tdd Plugin ausgegeben, 
+dass keine Testklasse gefunden werden kann, was auch stimmt. Jedoch wird es nicht immer für jede Klasse einen Testfall geben (Beans, Exceptions, ...)
+Man konnte entweder diese Testklasse erstellen oder den Buildprozess abbrechen. Es wäre schön wenn diese Warnung unterdrückt werden würde
+
+4
+28.10. Founded
+
+Sobald man ein File manipuliert werden alle makierungen aufgehoben. Es wäre wünschenswert wenn dies nicht geschehen würde.
+
+5
+28.10. Founded
+
+Es ist nicht ersichtlich ob eine Klasse für das Tdd Tool verwendet wird oder nicht. Das Häckchen im Kontextmenü bleibt immer
+anhackt.
+
+6
+28.10. Founded
+
+Es wurden zwei Klassen erstellt. LinkedNode und TestLinkedNode. Beim Triggern des Buildprozesses schreibt der JUnit Launch dass 
+"No JUnit tests founded".
+
+7
+28.10. Founded
+
+Es wurde auf LinkedNode der Build Prozess gestartet. Alle Methoden von LinkedNode wurden als besucht makiert.
+Danach wurde mit Node der Build Prozess gestartet. Keine Methode von LinkedNode wurde mehr als besucht makiert.
+Es scheint, dass immer nur die Testfälle einer Klasse für die Coverageberechnung verwendet wird.
+
+8
+28.10. Founded
+28.10. Resolved
+
+Es wurde auf LinkedNode der Build Prozess gestartet. Es wurden alle Tests von LinkedNode ausgeführt.
+Danach wurde mit Node der Build Prozess gestartet. Keine Methode von LinkedNode wurde mehr ausgeführt.
+obwohl die Testfälle von LinkedNode auf die von Node aufbauen.
+
+Lösung: Entspricht der Spezifikation.
+
+9
+28.10. Founded
+
+Wenn ein Testfall gespeichert wird, wird nicht der Buildprozess gestartet. 
+Wenn dies geschehen würde könnte man sehen ob man richtig refactort hat.
