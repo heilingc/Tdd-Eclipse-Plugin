@@ -72,22 +72,12 @@
             name="Create Test">
       </command>
       <command
-            categoryId="at.ac.tuwien.ifs.qse.tdd.commands.category"
-            id="at.ac.tuwien.ifs.qse.tdd.commands.setTestType"
-            name="Set Test Type">
-         <commandParameter
-               id="org.eclipse.ui.commands.radioStateParameter"
-               name="Radio Name"
-               optional="false">
-         </commandParameter>
-         <state
-               class="org.eclipse.ui.handlers.RadioState:UnitTest"
-               id="org.eclipse.ui.commands.radioState">
-         </state>
-      </command>
-      <command
             id="at.ac.tuwien.ifs.qse.tdd.commands.calculateCoverage"
             name="Calculate Coverage">
+      </command>
+      <command
+            id="at.ac.tuwien.ifs.qse.tdd.commands.extractTestcaseSuperclass"
+            name="Extract Testcase Superclass">
       </command>
    </extension>
    <extension
@@ -101,12 +91,12 @@
             commandId="at.ac.tuwien.ifs.qse.tdd.commands.createTestClass">
       </handler>
       <handler
-            class="at.ac.tuwien.ifs.qse.tdd.handlers.SetTestType"
-            commandId="at.ac.tuwien.ifs.qse.tdd.commands.setTestType">
-      </handler>
-      <handler
             class="at.ac.tuwien.ifs.qse.tdd.handlers.CalculateCoverage"
             commandId="at.ac.tuwien.ifs.qse.tdd.commands.calculateCoverage">
+      </handler>
+      <handler
+            class="at.ac.tuwien.ifs.qse.tdd.handlers.ExtractTestcaseSuperclass"
+            commandId="at.ac.tuwien.ifs.qse.tdd.commands.extractTestcaseSuperclass">
       </handler>
    </extension>
    <extension
@@ -215,6 +205,7 @@
                                  property="at.ac.tuwien.ifs.qse.tdd.hasAssociatedTest">
                            </test>
                            <test
+                                 forcePluginActivation="true"
                                  property="at.ac.tuwien.ifs.qse.tdd.isClass">
                            </test>
                         </and>
@@ -223,61 +214,12 @@
                </visibleWhen>
             </command>
             <separator
-                  name="at.ac.tuwien.ifs.qse.tdd.seperator1"
-                  visible="true">
-            </separator>
-            <command
-                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.setTestType"
-                  label="Unit Test"
-                  style="radio">
-               <visibleWhen
-                     checkEnabled="false">
-                  <with
-                        variable="selection">
-                     <iterate
-                           ifEmpty="true"
-                           operator="or">
-                        <test
-                              forcePluginActivation="true"
-                              property="at.ac.tuwien.ifs.qse.tdd.isTest">
-                        </test>
-                     </iterate>
-                  </with>
-               </visibleWhen>
-               <parameter
-                     name="org.eclipse.ui.commands.radioStateParameter"
-                     value="UnitTest">
-               </parameter>
-            </command>
-            <command
-                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.setTestType"
-                  label="Component Test"
-                  style="radio">
-               <visibleWhen
-                     checkEnabled="false">
-                  <with
-                        variable="selection">
-                     <iterate
-                           ifEmpty="true"
-                           operator="or">
-                        <test
-                              forcePluginActivation="true"
-                              property="at.ac.tuwien.ifs.qse.tdd.isTest">
-                        </test>
-                     </iterate>
-                  </with>
-               </visibleWhen>
-               <parameter
-                     name="org.eclipse.ui.commands.radioStateParameter"
-                     value="ComponentTest">
-               </parameter>
-            </command>
-            <separator
                   name="at.ac.tuwien.ifs.qse.tdd.separator2">
             </separator>
             <command
-                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.calculateCoverage"
-                  label="Calculate Coverage">
+                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.extractTestcaseSuperclass"
+                  label="Extract Testcase Superclass ..."
+                  style="push">
                <visibleWhen
                      checkEnabled="false">
                   <with
@@ -285,15 +227,10 @@
                      <iterate
                            ifEmpty="false"
                            operator="or">
-                        <and>
-                           <test
-                                 forcePluginActivation="true"
-                                 property="at.ac.tuwien.ifs.qse.tdd.hasAssociatedTest">
-                           </test>
-                           <test
-                                 property="at.ac.tuwien.ifs.qse.tdd.isClass">
-                           </test>
-                        </and>
+                        <test
+                              forcePluginActivation="true"
+                              property="at.ac.tuwien.ifs.qse.tdd.isTest">
+                        </test>
                      </iterate>
                   </with>
                </visibleWhen>
@@ -313,6 +250,13 @@
             properties="isClass,isTest,hasAssociatedClass,hasAssociatedTest"
             type="java.lang.Object">
       </propertyTester>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <viewerContribution
+            id="at.ac.tuwien.ifs.qse.tdd.viewerContribution2"
+            targetID="at.ac.tuwien.ifs.qse.tdd.viewerContribution2">
+      </viewerContribution>
    </extension>
 
 </plugin>

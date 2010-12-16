@@ -42,7 +42,7 @@ public class CalculateCoverage extends TddFileHandler {
 		
 		
 		
-		IClassFiles classFiles = new ClassFiles(packageFragmentRoot,location);		
+		// IClassFiles classFiles = new ClassFiles(packageFragmentRoot,location);		
 		
 		//IInstrumentation instrumentation
 		//ICoverageSession session = CoverageTools.createCoverageSession("CoverageRun1", instrumentations, coveragedatafiles, launchconfiguration)

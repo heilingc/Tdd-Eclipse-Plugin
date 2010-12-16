@@ -14,7 +14,10 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.ide;bundle-version="3.5.2",
  org.eclipse.jdt.junit;bundle-version="3.5.2",
  org.eclipse.core.expressions,
- com.mountainminds.eclemma.core
+ com.mountainminds.eclemma.core,
+ org.eclipse.ltk.core.refactoring;bundle-version="3.5.0",
+ org.eclipse.ltk.ui.refactoring;bundle-version="3.4.101",
+ org.eclipse.text;bundle-version="3.5.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Import-Package: com.mountainminds.eclemma.core,

@@ -10,24 +10,9 @@ import at.ac.tuwien.ifs.qse.tdd.preferences.PreferenceConstants;
 public class TddTestClass extends TddClass {
 	
 	private static final long serialVersionUID = -3499333309229653366L;
-
-	public enum TYPE {
-		UNITTEST,
-		COMPONENTTEST
-	};
-	
-	private TddTestClass.TYPE type = null;
 	
 	public TddTestClass(ICompilationUnit unit) {
 		super(unit);
-	}
-
-	public void setType(TddTestClass.TYPE type) {
-		this.type = type;
-	}
-
-	public TddTestClass.TYPE getType() {
-		return type;
 	}
 	
 	public static String getSuffix() {
