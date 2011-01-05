@@ -13,6 +13,9 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+
+import com.mountainminds.eclemma.core.CoverageTools;
+import com.mountainminds.eclemma.core.IInstrumentation;
 import com.mountainminds.eclemma.ui.launching.CoverageLaunchShortcut;
 
 /**
@@ -36,10 +39,19 @@ public class CoverageExecuter {
 
 			public void run() {
 				try {
+
 					CoverageLaunchShortcut launchShortcut = new CoverageLaunchShortcut();
 					//Define which shortcut should be used
 					launchShortcut.setInitializationData(null, null,SHORT_CUT); //$NON-NLS-1$
-									
+						
+					/*
+					List<ICompilationUnit> units = new ArrayList<ICompilationUnit>();
+					for (IType type : types) {
+						units.add(type.getCompilationUnit());
+					}
+					launchShortcut.launch(new StructuredSelection(units), LAUNCH_MODE);
+					*/
+					
 					for (IType type : types) {
 						ICompilationUnit lwCompilationUnit = type.getCompilationUnit();
 						if(lwCompilationUnit != null)

@@ -7,6 +7,10 @@ import org.eclipse.ltk.core.refactoring.Refactoring;
 import org.eclipse.ltk.core.refactoring.RefactoringDescriptor;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 
+/**
+ * Describe the Structure of a Refactoring Change
+ * @author Christian H.
+ */
 public class ExtractTestcaseSuperclassDescriptor extends RefactoringDescriptor {
 
 	public static final String REFACTORING_ID= "at.ac.tuwien.ifs.qse.tdd.extractTestcaseSuperclass";

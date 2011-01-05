@@ -49,15 +49,6 @@
       </category>
       <command
             categoryId="at.ac.tuwien.ifs.qse.tdd.commands.category"
-            id="at.ac.tuwien.ifs.qse.tdd.commands.tddPluginEnableCommand"
-            name="Enable/Disable Tdd Plugin">
-         <state
-               class="org.eclipse.ui.handlers.RegistryToggleState"
-               id="org.eclipse.ui.commands.toggleState">
-         </state>
-      </command>
-      <command
-            categoryId="at.ac.tuwien.ifs.qse.tdd.commands.category"
             id="at.ac.tuwien.ifs.qse.tdd.commands.jumpToTest"
             name="Jump to Test">
       </command>
@@ -72,12 +63,16 @@
             name="Create Test">
       </command>
       <command
-            id="at.ac.tuwien.ifs.qse.tdd.commands.calculateCoverage"
-            name="Calculate Coverage">
-      </command>
-      <command
             id="at.ac.tuwien.ifs.qse.tdd.commands.extractTestcaseSuperclass"
             name="Extract Testcase Superclass">
+      </command>
+      <command
+            id="at.ac.tuwien.ifs.qse.tdd.commands.enableTdd"
+            name="Enable Tdd for Project">
+      </command>
+      <command
+            id="at.ac.tuwien.ifs.qse.tdd.commands.disableTdd"
+            name="Disable Tdd for Project">
       </command>
    </extension>
    <extension
@@ -91,12 +86,16 @@
             commandId="at.ac.tuwien.ifs.qse.tdd.commands.createTestClass">
       </handler>
       <handler
-            class="at.ac.tuwien.ifs.qse.tdd.handlers.CalculateCoverage"
-            commandId="at.ac.tuwien.ifs.qse.tdd.commands.calculateCoverage">
-      </handler>
-      <handler
             class="at.ac.tuwien.ifs.qse.tdd.handlers.ExtractTestcaseSuperclass"
             commandId="at.ac.tuwien.ifs.qse.tdd.commands.extractTestcaseSuperclass">
+      </handler>
+      <handler
+            class="at.ac.tuwien.ifs.qse.tdd.handlers.EnableTdd"
+            commandId="at.ac.tuwien.ifs.qse.tdd.commands.enableTdd">
+      </handler>
+      <handler
+            class="at.ac.tuwien.ifs.qse.tdd.handlers.DisableTdd"
+            commandId="at.ac.tuwien.ifs.qse.tdd.commands.disableTdd">
       </handler>
    </extension>
    <extension
@@ -129,6 +128,10 @@
                                  forcePluginActivation="true"
                                  property="at.ac.tuwien.ifs.qse.tdd.isTest">
                            </test>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.hasTddNature">
+                           </test>
                         </and>
                      </iterate>
                   </with>
@@ -156,6 +159,10 @@
                                  forcePluginActivation="true"
                                  property="at.ac.tuwien.ifs.qse.tdd.isClass">
                            </test>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.hasTddNature">
+                           </test>
                         </and>
                      </iterate>
                   </with>
@@ -181,6 +188,10 @@
                            <test
                                  forcePluginActivation="true"
                                  property="at.ac.tuwien.ifs.qse.tdd.isTest">
+                           </test>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.hasTddNature">
                            </test>
                         </and>
                      </iterate>
@@ -208,6 +219,10 @@
                                  forcePluginActivation="true"
                                  property="at.ac.tuwien.ifs.qse.tdd.isClass">
                            </test>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.hasTddNature">
+                           </test>
                         </and>
                      </iterate>
                   </with>
@@ -227,10 +242,68 @@
                      <iterate
                            ifEmpty="false"
                            operator="or">
-                        <test
-                              forcePluginActivation="true"
-                              property="at.ac.tuwien.ifs.qse.tdd.isTest">
-                        </test>
+                        <and>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.isTest">
+                           </test>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.hasTddNature">
+                           </test>
+                        </and>
+                     </iterate>
+                  </with>
+               </visibleWhen>
+            </command>
+            <separator
+                  name="at.ac.tuwien.ifs.qse.tdd.separator3">
+            </separator>
+            <command
+                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.enableTdd"
+                  label="Enable Tdd for Project"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <iterate
+                           ifEmpty="false"
+                           operator="or">
+                        <and>
+                           <not>
+                              <test
+                                    forcePluginActivation="true"
+                                    property="at.ac.tuwien.ifs.qse.tdd.hasTddNature">
+                              </test>
+                           </not>
+                           <instanceof
+                                 value="org.eclipse.jdt.core.ICompilationUnit">
+                           </instanceof></and>
+                     </iterate>
+                  </with>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.disableTdd"
+                  label="Disable Tdd for Project"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <iterate
+                           ifEmpty="false"
+                           operator="or">
+                        <and>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.hasTddNature">
+                           </test>
+                           <instanceof
+                                 value="org.eclipse.jdt.core.ICompilationUnit">
+                           </instanceof>
+                        </and>
                      </iterate>
                   </with>
                </visibleWhen>
@@ -247,7 +320,7 @@
             class="at.ac.tuwien.ifs.qse.tdd.propertyTester.TddPropertyTester"
             id="at.ac.tuwien.ifs.qse.tdd.propertyTester"
             namespace="at.ac.tuwien.ifs.qse.tdd"
-            properties="isClass,isTest,hasAssociatedClass,hasAssociatedTest"
+            properties="isClass,isTest,hasAssociatedClass,hasAssociatedTest,hasTddNature"
             type="java.lang.Object">
       </propertyTester>
    </extension>

@@ -185,6 +185,7 @@ public class TddBuilder extends IncrementalProjectBuilder implements IHandleExce
 	@Override
 	public void handleException(final SearchException exc,final String fileName){
 	
+		/*
 		Display.getDefault().asyncExec(new Runnable() {
 		     public void run() {
 		    	  Dialog dialog = null;
@@ -195,7 +196,9 @@ public class TddBuilder extends IncrementalProjectBuilder implements IHandleExce
 			  			
 			  	  }
 		     }
-		}); 
+		});
+		*/
+		
 	}
 	
 }

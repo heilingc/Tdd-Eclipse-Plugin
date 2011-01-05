@@ -1,7 +1,16 @@
 package at.ac.tuwien.ifs.qse.tdd.propertyTester;
 
+import java.util.Iterator;
+
 import org.eclipse.core.expressions.PropertyTester;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
+
 import at.ac.tuwien.ifs.qse.tdd.model.*;
 
 
@@ -56,6 +65,14 @@ public class TddPropertyTester extends PropertyTester {
 			System.out.print("hasAssociatedTest: ");
 			System.out.println(((TddSourceClass)c).getTestClass() != null);
 			return ((TddSourceClass)c).getTestClass() != null;
+		}
+		if("hasTddNature".equals(property)) {
+			
+			IFile file = (IFile)unit.getResource();
+			IProject project = unit.getJavaProject().getProject();
+
+			return TddPluginHandler.getState(project);
+			
 		}
 		
 		return false;

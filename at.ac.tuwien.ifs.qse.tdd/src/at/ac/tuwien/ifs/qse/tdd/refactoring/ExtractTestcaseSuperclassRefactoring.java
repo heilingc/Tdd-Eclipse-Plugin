@@ -1,58 +1,16 @@
 package at.ac.tuwien.ifs.qse.tdd.refactoring;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import java.util.*;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.core.runtime.SubProgressMonitor;
-import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IJavaModel;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IMethod;
-import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.ITypeRoot;
-import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTNode;
-import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.ASTVisitor;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.FieldDeclaration;
-import org.eclipse.jdt.core.dom.ImportDeclaration;
-import org.eclipse.jdt.core.dom.MethodDeclaration;
-import org.eclipse.jdt.core.dom.Modifier;
-import org.eclipse.jdt.core.dom.Name;
-import org.eclipse.jdt.core.dom.SimpleType;
-import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
-import org.eclipse.jdt.core.dom.Type;
-import org.eclipse.jdt.core.dom.TypeDeclaration;
+import org.eclipse.core.runtime.*;
+import org.eclipse.jdt.core.*;
+import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.Modifier.ModifierKeyword;
-import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
-import org.eclipse.jdt.core.dom.rewrite.ImportRewrite;
-import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
-import org.eclipse.jdt.internal.core.JavaModel;
-import org.eclipse.jdt.internal.core.PackageFragment;
+import org.eclipse.jdt.core.dom.rewrite.*;
 import org.eclipse.jface.text.Document;
-import org.eclipse.ltk.core.refactoring.Change;
-import org.eclipse.ltk.core.refactoring.ChangeDescriptor;
-import org.eclipse.ltk.core.refactoring.CompositeChange;
-import org.eclipse.ltk.core.refactoring.Refactoring;
-import org.eclipse.ltk.core.refactoring.RefactoringChangeDescriptor;
-import org.eclipse.ltk.core.refactoring.RefactoringStatus;
-import org.eclipse.ltk.core.refactoring.TextFileChange;
-import org.eclipse.text.edits.MalformedTreeException;
-import org.eclipse.text.edits.MultiTextEdit;
-import org.eclipse.text.edits.TextEdit;
+import org.eclipse.ltk.core.refactoring.*;
+import org.eclipse.text.edits.*;
 
 /**
  * Will change a selected Class (now childClass) and create a new Class
@@ -65,7 +23,6 @@ import org.eclipse.text.edits.TextEdit;
  * @author Christian
  *
  */
-@SuppressWarnings("restriction")
 public class ExtractTestcaseSuperclassRefactoring extends Refactoring{
 
 	private List<IMethod> parentClassMethods  = new ArrayList<IMethod>();
@@ -188,20 +145,36 @@ public class ExtractTestcaseSuperclassRefactoring extends Refactoring{
 	private ImportRewrite calculateImportChanges(IProgressMonitor monitor,
 			CompilationUnit childNode, CompilationUnit parentNode) {
 
-		ICompilationUnit parentClass;		
 		SubProgressMonitor subMonitor= new SubProgressMonitor(monitor, 1);
 		
 		subMonitor.beginTask("Create Import Changes", 1);
 		
 		//Collect childs imports
-		List imports = childNode.imports();
+		List<?> imports = childNode.imports();
 		
 		//Add childs imports to parent
 		ImportRewrite parentImportRewrite = ImportRewrite.create(parentNode, true);
 		for (Object obj : imports) {
 			ImportDeclaration importDec = (ImportDeclaration)obj;
-			parentImportRewrite.addImport(importDec.getName().getFullyQualifiedName());
+			if (importDec.isOnDemand()) {
+				if (importDec.isStatic()) {
+					parentImportRewrite.addStaticImport(importDec.getName().getFullyQualifiedName(), "*", false);
+				}
+				else {
+					parentImportRewrite.addImport(importDec.getName().getFullyQualifiedName() + ".*");
+				}
+			}
+			else {
+				if (importDec.isStatic()) {
+					parentImportRewrite.addStaticImport(importDec.getName().getFullyQualifiedName(), null, false);
+				}
+				else {
+					parentImportRewrite.addImport(importDec.getName().getFullyQualifiedName());
+				}
+			}
 		}
+		
+		//Add childs static imports to parent
 		
 		subMonitor.done();
 		
@@ -246,7 +219,7 @@ public class ExtractTestcaseSuperclassRefactoring extends Refactoring{
 		TypeDeclaration childTypeDec = (TypeDeclaration) childNode.types().get(0);
 		
 		Type childSuperclass = childTypeDec.getSuperclassType();
-		List childInterfaces = childTypeDec.superInterfaceTypes();
+		List<?> childInterfaces = childTypeDec.superInterfaceTypes();
 
 		
 		if (childSuperclass != null) {
@@ -354,7 +327,6 @@ public class ExtractTestcaseSuperclassRefactoring extends Refactoring{
 		
 	}
 	
-	@SuppressWarnings("unchecked")
 	private void doClassHeaderChanges(IProgressMonitor monitor, CompilationUnit childNode, ICompilationUnit childClass) throws JavaModelException {
 		
 		SubProgressMonitor subMonitor= new SubProgressMonitor(monitor, 1);
@@ -364,7 +336,16 @@ public class ExtractTestcaseSuperclassRefactoring extends Refactoring{
 		TypeDeclaration childTypeDec = (TypeDeclaration) childNode.types().get(0);
 
 		//Set extend from childClass
-		Name newName = childNode.getAST().newName(parentClassPackage + "." + parentClassName);
+		
+		Name newName = null;
+		
+		if (parentClassPackage.toString().equals("")) {
+			newName = childNode.getAST().newName(parentClassName);
+		}
+		else {
+			newName = childNode.getAST().newName(parentClassPackage + "." + parentClassName);
+		}
+		
 		Type newType = childNode.getAST().newSimpleType(newName);
 		childTypeDec.setSuperclassType(newType);
 		childTypeDec.superInterfaceTypes().clear();
