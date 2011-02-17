@@ -1,17 +1,21 @@
 package at.ac.tuwien.ifs.qse.tdd.propertyTester;
 
-import java.util.Iterator;
-
 import org.eclipse.core.expressions.PropertyTester;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.ui.JavaUI;
+import org.eclipse.jface.text.TextSelection;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 
-import at.ac.tuwien.ifs.qse.tdd.model.*;
+import at.ac.tuwien.ifs.qse.tdd.model.TddClass;
+import at.ac.tuwien.ifs.qse.tdd.model.TddClassFactory;
+import at.ac.tuwien.ifs.qse.tdd.model.TddPluginHandler;
+import at.ac.tuwien.ifs.qse.tdd.model.TddSourceClass;
+import at.ac.tuwien.ifs.qse.tdd.model.TddTestClass;
 
 
 public class TddPropertyTester extends PropertyTester {
@@ -20,12 +24,14 @@ public class TddPropertyTester extends PropertyTester {
 	public boolean test(Object receiver, String property, Object[] args,
 			Object expectedValue) {
 		
-		ICompilationUnit unit = null;
-		
-		if ((receiver instanceof ICompilationUnit)) unit = (ICompilationUnit)receiver;		
-		else return false;
+
 		
 		if("isClass".equals(property)) {
+			
+			ICompilationUnit unit = getUnit(receiver);
+			if (unit == null) {
+				return false;
+			}
 			
 			System.out.print("isClass: ");
 			System.out.println((TddClassFactory.get(unit) instanceof TddSourceClass));
@@ -35,6 +41,11 @@ public class TddPropertyTester extends PropertyTester {
 		
 		if("isTest".equals(property)) {
 			
+			ICompilationUnit unit = getUnit(receiver);
+			if (unit == null) {
+				return false;
+			}
+			
 			System.out.print("isTest: ");
 			System.out.println((TddClassFactory.get(unit) instanceof TddTestClass));
 			return TddClassFactory.get(unit) instanceof TddTestClass;
@@ -42,6 +53,11 @@ public class TddPropertyTester extends PropertyTester {
 		}
 		
 		if("hasAssociatedClass".equals(property)) {
+			
+			ICompilationUnit unit = getUnit(receiver);
+			if (unit == null) {
+				return false;
+			}
 			
 			TddClass c = TddClassFactory.get(unit);
 			if (!(c instanceof TddTestClass)) {
@@ -56,6 +72,11 @@ public class TddPropertyTester extends PropertyTester {
 		
 		if("hasAssociatedTest".equals(property)) {
 			
+			ICompilationUnit unit = getUnit(receiver);
+			if (unit == null) {
+				return false;
+			}
+			
 			TddClass c = TddClassFactory.get(unit);
 			if (!(c instanceof TddSourceClass)) {
 				System.out.println("hasAssociatedTest: false");
@@ -68,14 +89,63 @@ public class TddPropertyTester extends PropertyTester {
 		}
 		if("hasTddNature".equals(property)) {
 			
-			IFile file = (IFile)unit.getResource();
-			IProject project = unit.getJavaProject().getProject();
+			IJavaProject project = getProject(receiver);
+			if (project == null) {
+				return false;
+			}
 
-			return TddPluginHandler.getState(project);
+			return TddPluginHandler.getState(project.getProject());
 			
 		}
 		
 		return false;
-	}	
+	}
+	
+	private ICompilationUnit getUnit(Object receiver) {
+		
+		ICompilationUnit unit = null;
+		
+		if ((receiver instanceof ICompilationUnit)) {
+			unit = (ICompilationUnit)receiver;		
+		}
+		else if(receiver instanceof TextSelection) {
+
+			IWorkbench workbench = PlatformUI.getWorkbench();
+			if (workbench == null) return null;
+
+			IWorkbenchWindow activeWorkbenchWindow = workbench.getActiveWorkbenchWindow();
+			IWorkbenchPage page = activeWorkbenchWindow.getActivePage();
+
+			if(page.getActiveEditor() == null || page.getActiveEditor().getEditorInput() == null) {
+				return null;
+			}
+			
+			IJavaElement element = JavaUI.getEditorInputJavaElement(page.getActiveEditor().getEditorInput());
+
+			if (element instanceof ICompilationUnit) {
+				unit = (ICompilationUnit) element;
+			} else {
+				return null;
+			}
+		}
+		
+		return unit;
+	}
+	
+	private IJavaProject getProject(Object receiver) {
+		
+		if (receiver instanceof IJavaProject) {
+			return (IJavaProject)receiver;
+		}
+		
+		ICompilationUnit unit = getUnit(receiver);
+		if (unit != null) {
+			return unit.getJavaProject();
+		}
+		
+		return null;
+		
+	}
+	
 
 }

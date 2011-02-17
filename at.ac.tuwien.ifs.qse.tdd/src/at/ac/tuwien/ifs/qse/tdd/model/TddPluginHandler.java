@@ -1,21 +1,10 @@
 package at.ac.tuwien.ifs.qse.tdd.model;
 
-import java.util.Iterator;
-import java.util.Map;
-
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.menus.UIElement;
 
 import at.ac.tuwien.ifs.qse.tdd.builder.TddNature;
-import at.ac.tuwien.ifs.qse.tdd.exception.SearchException;
 
 
 /**

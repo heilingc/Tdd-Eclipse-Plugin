@@ -2,8 +2,13 @@ package at.ac.tuwien.ifs.qse.tdd.model;
 
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IType;
+
 import at.ac.tuwien.ifs.qse.tdd.finder.TestFinder;
 
+/**
+ * Represent a Source Class
+ *
+ */
 public class TddSourceClass extends TddClass {
 	
 	private static final long serialVersionUID = -8817804854598636385L;

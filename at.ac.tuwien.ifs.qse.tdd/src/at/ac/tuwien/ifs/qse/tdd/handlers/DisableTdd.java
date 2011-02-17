@@ -2,11 +2,7 @@ package at.ac.tuwien.ifs.qse.tdd.handlers;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.IHandler;
-import org.eclipse.core.commands.IHandlerListener;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaProject;
 
 import at.ac.tuwien.ifs.qse.tdd.exception.SearchException;
 import at.ac.tuwien.ifs.qse.tdd.model.TddPluginHandler;
@@ -22,15 +18,11 @@ public class DisableTdd extends TddFileHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
-		final ICompilationUnit unit = getCompilationUnit();
+		IJavaProject project =  this.getProject();
 		
-		if(unit == null) return null;
-		if(!(unit instanceof ICompilationUnit)) return null;
-		
-		IFile file = (IFile)unit.getResource();
-		IProject project = unit.getJavaProject().getProject();
-
-		TddPluginHandler.setState(project, false);
+		if (project != null) {
+			TddPluginHandler.setState(project.getProject(), false);
+		}
 		
 		return null;
 		

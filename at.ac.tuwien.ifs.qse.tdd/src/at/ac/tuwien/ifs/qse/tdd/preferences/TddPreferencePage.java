@@ -14,7 +14,6 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.dialogs.PreferenceLinkArea;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 
-
 import at.ac.tuwien.ifs.qse.tdd.Activator;
 import at.ac.tuwien.ifs.qse.tdd.finder.TestFinder.SEARCHSCOPE;
 

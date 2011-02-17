@@ -7,6 +7,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeSelection;
@@ -59,6 +60,31 @@ public abstract class TddFileHandler extends AbstractHandler implements IElement
 		return element;
 	}
 
+	public IJavaProject getProject() {
+		ICompilationUnit unit = getCompilationUnit();
+		
+		//Check if selection is from IJavaProject
+		if(service != null) {
+			ISelection selection = service.getSelection();
+			if (selection instanceof TreeSelection) {
+				for (@SuppressWarnings("rawtypes")
+				Iterator it = ((TreeSelection) selection).iterator(); it.hasNext();) {
+					Object el = it.next();
+					if (el instanceof IJavaProject) {
+						return (IJavaProject) el;
+					} 
+				}
+			}
+		}
+		
+		if (unit != null) {
+			return unit.getJavaProject();
+		}
+		
+		return null;
+		
+	}
+	
 	/**
 	 * Extract the compilation unit from the current selection
 	 * @return ICompilationUnit
@@ -83,6 +109,29 @@ public abstract class TddFileHandler extends AbstractHandler implements IElement
 					} 
 				}
 			}
+		}
+		
+		
+		if(unit == null) {
+
+			IWorkbench workbench = PlatformUI.getWorkbench();
+			if (workbench == null) return null;
+
+			IWorkbenchWindow activeWorkbenchWindow = workbench.getActiveWorkbenchWindow();
+			IWorkbenchPage page = activeWorkbenchWindow.getActivePage();
+
+			if(page.getActiveEditor() == null || page.getActiveEditor().getEditorInput() == null) {
+				return null;
+			}
+			
+			IJavaElement element = JavaUI.getEditorInputJavaElement(page.getActiveEditor().getEditorInput());
+
+			if (element instanceof ICompilationUnit) {
+				unit = (ICompilationUnit) element;
+			} else {
+				return null;
+			}
+			
 		}
 
 		return unit;

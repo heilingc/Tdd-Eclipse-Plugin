@@ -1,16 +1,50 @@
 package at.ac.tuwien.ifs.qse.tdd.refactoring;
 
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.*;
-import org.eclipse.jdt.core.*;
-import org.eclipse.jdt.core.dom.*;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.SubProgressMonitor;
+import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.ASTParser;
+import org.eclipse.jdt.core.dom.ASTVisitor;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.FieldDeclaration;
+import org.eclipse.jdt.core.dom.ImportDeclaration;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.Modifier;
+import org.eclipse.jdt.core.dom.Name;
+import org.eclipse.jdt.core.dom.Type;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.Modifier.ModifierKeyword;
-import org.eclipse.jdt.core.dom.rewrite.*;
+import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
+import org.eclipse.jdt.core.dom.rewrite.ImportRewrite;
+import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
 import org.eclipse.jface.text.Document;
-import org.eclipse.ltk.core.refactoring.*;
-import org.eclipse.text.edits.*;
+import org.eclipse.ltk.core.refactoring.Change;
+import org.eclipse.ltk.core.refactoring.ChangeDescriptor;
+import org.eclipse.ltk.core.refactoring.CompositeChange;
+import org.eclipse.ltk.core.refactoring.Refactoring;
+import org.eclipse.ltk.core.refactoring.RefactoringChangeDescriptor;
+import org.eclipse.ltk.core.refactoring.RefactoringStatus;
+import org.eclipse.ltk.core.refactoring.TextFileChange;
+import org.eclipse.text.edits.MalformedTreeException;
+import org.eclipse.text.edits.MultiTextEdit;
+import org.eclipse.text.edits.TextEdit;
 
 /**
  * Will change a selected Class (now childClass) and create a new Class
@@ -28,6 +62,7 @@ public class ExtractTestcaseSuperclassRefactoring extends Refactoring{
 	private List<IMethod> parentClassMethods  = new ArrayList<IMethod>();
 	
 	private ICompilationUnit childClass;
+	private ICompilationUnit parentClass;
 	
 	private String parentClassName;
 	private String childClassName;
@@ -36,6 +71,20 @@ public class ExtractTestcaseSuperclassRefactoring extends Refactoring{
 	private String childClassPackage;
 
 	private HashMap<ICompilationUnit,TextFileChange> textFileChanges = new HashMap<ICompilationUnit,TextFileChange>();
+
+	/**
+	 * Only useful after execution of the Refactoring
+	 */
+	public ICompilationUnit getParentClass() {
+		return parentClass;
+	}
+	
+	/**
+	 * Only useful after execution of the Refactoring
+	 */
+	public ICompilationUnit getChildClass() {
+		return childClass;
+	}
 	
 	public void setExtractionClass(ICompilationUnit extractionClass) {
 		this.childClass = extractionClass;
@@ -118,7 +167,7 @@ public class ExtractTestcaseSuperclassRefactoring extends Refactoring{
 		childClass = moveClientClass(monitor,childClass,childClassName,childClassPackage);
 		
 		CompilationUnit childNode = createASTNode(monitor,childClass);
-		ICompilationUnit parentClass = createMinimalParentClass(monitor,parentClassName,parentClassPackage,childNode);
+		parentClass = createMinimalParentClass(monitor,parentClassName,parentClassPackage,childNode);
 		
 		CompilationUnit parentNode = createASTNode(monitor,parentClass);
 		ASTRewrite parentRewrite = ASTRewrite.create(parentNode.getAST());
@@ -134,13 +183,13 @@ public class ExtractTestcaseSuperclassRefactoring extends Refactoring{
 		
 		Change change = doChange(monitor,childClass, parentClass, childRewrite,parentRewrite,childNode,parentNode,parentImportRewrite);
 		
-		
-		
 		monitor.done();
 		
 		return change;
 			
 	}
+
+
 
 	private ImportRewrite calculateImportChanges(IProgressMonitor monitor,
 			CompilationUnit childNode, CompilationUnit parentNode) {

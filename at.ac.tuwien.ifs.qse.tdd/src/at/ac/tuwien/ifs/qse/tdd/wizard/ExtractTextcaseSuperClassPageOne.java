@@ -1,6 +1,7 @@
 package at.ac.tuwien.ifs.qse.tdd.wizard;
 
 import java.util.ArrayList;
+
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
@@ -16,13 +17,17 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.ltk.ui.refactoring.UserInputWizardPage;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.widgets.*;
-import org.eclipse.swt.*;
-import org.eclipse.swt.layout.*;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.SelectionDialog;
 
 import at.ac.tuwien.ifs.qse.tdd.refactoring.ExtractTestcaseSuperclassRefactoring;
@@ -251,10 +256,15 @@ public class ExtractTextcaseSuperClassPageOne extends UserInputWizardPage implem
 		IMethod[] methods = calculateMethods(childClass);
 		
 		for (IMethod method : methods) {
-			if (!method.getAnnotation("Before").exists() &&
-				!method.getAnnotation("After").exists() &&
-				!method.getAnnotation("BeforeClass").exists() &&
-				!method.getAnnotation("AfterClass").exists()) {
+			boolean before = method.getAnnotation("Before").exists();
+			boolean after = method.getAnnotation("After").exists();
+			boolean beforeClass = method.getAnnotation("BeforeClass").exists();
+			boolean afterClass = method.getAnnotation("AfterClass").exists();
+			
+			if (!before &&
+				!after &&
+				!beforeClass &&
+				!afterClass) {
 				
 				selectedMethods.add(method);
 				

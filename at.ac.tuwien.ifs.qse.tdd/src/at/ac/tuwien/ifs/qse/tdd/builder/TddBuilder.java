@@ -12,13 +12,9 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.swt.widgets.Display;
 
 import at.ac.tuwien.ifs.qse.tdd.Activator;
-import at.ac.tuwien.ifs.qse.tdd.dialog.TddErrorDialog;
 import at.ac.tuwien.ifs.qse.tdd.exception.IHandleException;
-import at.ac.tuwien.ifs.qse.tdd.exception.NoTestFound;
 import at.ac.tuwien.ifs.qse.tdd.exception.SearchException;
 import at.ac.tuwien.ifs.qse.tdd.finder.CoverageBuilderVisitor;
 import at.ac.tuwien.ifs.qse.tdd.finder.CoverageExecuter;
@@ -37,7 +33,7 @@ import at.ac.tuwien.ifs.qse.tdd.preferences.PreferenceConstants;
 public class TddBuilder extends IncrementalProjectBuilder implements IHandleException{
 
 	public static final String BUILDER_ID = "at.ac.tuwien.ifs.qse.tdd.tddBuilder";
-			
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -45,7 +41,7 @@ public class TddBuilder extends IncrementalProjectBuilder implements IHandleExce
 	 *      java.util.Map, org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	protected IProject[] build(int kind, @SuppressWarnings("rawtypes") Map args, IProgressMonitor monitor)throws CoreException {
-		 
+		
 		String executeOn = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_EXECUTEON);
 		if(executeOn == null)
 			return null;
@@ -155,8 +151,6 @@ public class TddBuilder extends IncrementalProjectBuilder implements IHandleExce
 	 	    try {
 	 	    	fileName = file.getName();
 	 	    	
-	 	  
-	 	    	
 	 	    	if(finder.getTypeOfSearchName(fileName).equals(FILETYPE.TESTCLASS)){
 	 	    		continue;
 	 	    	}
@@ -169,6 +163,7 @@ public class TddBuilder extends IncrementalProjectBuilder implements IHandleExce
 	 	    	//Search the associated TestFile
 	 	    	IType type = finder.search(testName, delta.getResource().getProject(),SEARCHSCOPE.valueOf(scope));
 	 	    	if(type != null) {
+	 	    		//TODO getin
 	 	    		types.add(type);
 	 	    	}
 	 	    		 	    	
@@ -178,8 +173,7 @@ public class TddBuilder extends IncrementalProjectBuilder implements IHandleExce
 		}
 	    //execute the coverage
 	    if(types.size() != 0)	
- 	    	executer.executeFileCoverage(types); 	   
-
+ 	    	executer.executeFileCoverage(types); 	
 	}
 	
 	@Override

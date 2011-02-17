@@ -1,6 +1,5 @@
 package at.ac.tuwien.ifs.qse.tdd.finder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
@@ -14,8 +13,6 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
-import com.mountainminds.eclemma.core.CoverageTools;
-import com.mountainminds.eclemma.core.IInstrumentation;
 import com.mountainminds.eclemma.ui.launching.CoverageLaunchShortcut;
 
 /**
