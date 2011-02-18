@@ -74,6 +74,10 @@
             id="at.ac.tuwien.ifs.qse.tdd.commands.disableTdd"
             name="Disable Tdd for Project">
       </command>
+      <command
+            id="at.ac.tuwien.ifs.qse.tdd.commands.createMock"
+            name="Create Mock">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -96,6 +100,10 @@
       <handler
             class="at.ac.tuwien.ifs.qse.tdd.handlers.DisableTdd"
             commandId="at.ac.tuwien.ifs.qse.tdd.commands.disableTdd">
+      </handler>
+      <handler
+            class="at.ac.tuwien.ifs.qse.tdd.handlers.CreateMock"
+            commandId="at.ac.tuwien.ifs.qse.tdd.commands.createMock">
       </handler>
    </extension>
    <extension
@@ -256,6 +264,31 @@
                   </with>
                </visibleWhen>
             </command>
+            <command
+                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.createMock"
+                  label="Create Mock Template ..."
+                  style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <iterate
+                           ifEmpty="false"
+                           operator="or">
+                        <and>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.isTest">
+                           </test>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.hasTddNature">
+                           </test>
+                        </and>
+                     </iterate>
+                  </with>
+               </visibleWhen>
+            </command>
             <separator
                   name="at.ac.tuwien.ifs.qse.tdd.separator3">
             </separator>
@@ -277,9 +310,14 @@
                                     property="at.ac.tuwien.ifs.qse.tdd.hasTddNature">
                               </test>
                            </not>
-                           <instanceof
-                                 value="org.eclipse.jdt.core.ICompilationUnit">
-                           </instanceof></and>
+                           <or>
+                              <instanceof
+                                    value="org.eclipse.jdt.core.ICompilationUnit">
+                              </instanceof>
+                              <instanceof
+                                    value="org.eclipse.jdt.core.IJavaProject">
+                              </instanceof>
+                           </or></and>
                      </iterate>
                   </with>
                </visibleWhen>
@@ -300,9 +338,14 @@
                                  forcePluginActivation="true"
                                  property="at.ac.tuwien.ifs.qse.tdd.hasTddNature">
                            </test>
-                           <instanceof
-                                 value="org.eclipse.jdt.core.ICompilationUnit">
-                           </instanceof>
+                           <or>
+                              <instanceof
+                                    value="org.eclipse.jdt.core.ICompilationUnit">
+                              </instanceof>
+                              <instanceof
+                                    value="org.eclipse.jdt.core.IJavaProject">
+                              </instanceof>
+                           </or>
                         </and>
                      </iterate>
                   </with>
@@ -312,6 +355,186 @@
       </menuContribution>
       <menuContribution
             locationURI="popup:#CompilationUnitEditorContext?before=additions">
+         <menu
+               icon="icons/Tdd.ico"
+               label="Tdd">
+            <command
+                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.createTestClass"
+                  label="Create Class"
+                  mnemonic="C"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <iterate
+                           ifEmpty="false"
+                           operator="or">
+                        <and>
+                           <not>
+                              <test
+                                    forcePluginActivation="true"
+                                    property="at.ac.tuwien.ifs.qse.tdd.hasAssociatedClass">
+                              </test>
+                           </not>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.isTest">
+                           </test>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.hasTddNature">
+                           </test>
+                        </and>
+                     </iterate>
+                  </with>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.createTestClass"
+                  label="Create Test"
+                  mnemonic="C">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <iterate
+                           ifEmpty="false"
+                           operator="or">
+                        <and>
+                           <not>
+                              <test
+                                    forcePluginActivation="true"
+                                    property="at.ac.tuwien.ifs.qse.tdd.hasAssociatedTest">
+                              </test>
+                           </not>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.isClass">
+                           </test>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.hasTddNature">
+                           </test>
+                        </and>
+                     </iterate>
+                  </with>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.jumpToTest"
+                  label="Jump to Class"
+                  mnemonic="J"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <iterate
+                           ifEmpty="false"
+                           operator="or">
+                        <and>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.hasAssociatedClass">
+                           </test>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.isTest">
+                           </test>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.hasTddNature">
+                           </test>
+                        </and>
+                     </iterate>
+                  </with>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.jumpToTest"
+                  label="Jump to Test"
+                  mnemonic="J"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <iterate
+                           ifEmpty="false"
+                           operator="or">
+                        <and>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.hasAssociatedTest">
+                           </test>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.isClass">
+                           </test>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.hasTddNature">
+                           </test>
+                        </and>
+                     </iterate>
+                  </with>
+               </visibleWhen>
+            </command>
+            <separator
+                  name="at.ac.tuwien.ifs.qse.tdd.separator2">
+            </separator>
+            <command
+                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.extractTestcaseSuperclass"
+                  label="Extract Testcase Superclass ..."
+                  style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <iterate
+                           ifEmpty="false"
+                           operator="or">
+                        <and>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.isTest">
+                           </test>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.hasTddNature">
+                           </test>
+                        </and>
+                     </iterate>
+                  </with>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.createMock"
+                  label="Create Mock Template ..."
+                  style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <iterate
+                           ifEmpty="false"
+                           operator="or">
+                        <and>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.hasTddNature">
+                           </test>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.isTest">
+                           </test>
+                        </and>
+                     </iterate>
+                  </with>
+               </visibleWhen>
+            </command>
+         </menu>
       </menuContribution>
    </extension>
    <extension
