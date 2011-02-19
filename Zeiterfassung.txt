@@ -12,6 +12,27 @@
 04.11.2010 6   Kontextmenü neu aufgebaut
                Begonnen mit der Entkopplung von Model und UI
 05.11.2010 4   EclEmma Codecover Code und Javadoc überblickt
-               Begonnen mit dem Versuch eine EclEmma CodeCoverSession auszulesen.
+               Begonnen mit dem Versuch eine EclEmma CodeCoverSession 
+auszulesen.
+16.11.2010 6   Refactoring
+17.11.2010 4   Refactoring
+24.11.2010 4   Eingelesen in Eclipse LTK und Eclipse JDT
+25.11.2010 0,5 Praktikumstreffen
+02.12.2010 6   Extract Testcase Superclass programmiert
+03.12.2010 6   Extract Testcase Superclass programmiert
+04.12.2010 6   Extract Testcase Superclass programmiert
+05.12.2010 6   Extract Testcase Superclass programmiert
+09.12.2010 0,5 Praktikumstreffen
+14.12.2010 5   Extract Testcase Superclass programmiert
+15.12.2010 5   Extract Testcase Superclass programmiert
+17.12.2010 1   Praktikumstreffen
+18.12.2010 4   Static Imports bei Extract Testcase Superclass eingebaut.
+19.12.2010 1   Protokolle geschrieben
+01.01.2011 3   Test durchgeführt
+01.02.2011 4   EclEmma Code studiert und festgestellt das iterative Berechnung mit angestrebter Granualität nicht funktioniert.
+
+SUMME      86
+
+
                 
                	   

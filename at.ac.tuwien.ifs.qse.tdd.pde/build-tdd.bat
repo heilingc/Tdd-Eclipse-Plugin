@@ -1,1 +1,1 @@
-java -jar C:\Projektpraktikum\ide\plugins\org.eclipse.equinox.launcher_1.0.201.R35x_v20090715.jar -application org.eclipse.ant.core.antRunner -buildfile build-tdd.xml
+java -jar ..\..\..\ide\plugins\org.eclipse.equinox.launcher_1.0.201.R35x_v20090715.jar -application org.eclipse.ant.core.antRunner -buildfile build-tdd.xml

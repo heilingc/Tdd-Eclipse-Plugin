@@ -1,0 +1,22 @@
+import static org.mockito.Mockito.*;
+import java.util.List;
+
+//Create Mock
+List mock = mock(List.class);
+
+//Configure Mock
+doReturn(null).when(mock).isEmpty();
+doReturn(null).when(mock).iterator();
+when(mock.toArray(any()).thenReturn(null);
+when(mock.add(any()).thenThrow(new Exception());
+when(mock.remove(any()).thenReturn(null);
+
+//... write Test with Mock
+
+//Check Method Calls
+verify(mock, times(1)).isEmpty);
+verify(mock, times(1)).iterator);
+verify(mock, times(1)).toArray(any());
+verify(mock, times(1)).add(any());
+verify(mock, atLeast(1)).remove(any());
+verify(mock, atMost(5)).remove(any());
