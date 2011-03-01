@@ -49,8 +49,8 @@
       </category>
       <command
             categoryId="at.ac.tuwien.ifs.qse.tdd.commands.category"
-            id="at.ac.tuwien.ifs.qse.tdd.commands.jumpToTest"
-            name="Jump to Test">
+            id="at.ac.tuwien.ifs.qse.tdd.commands.jumpTo"
+            name="Jump to ...">
       </command>
       <command
             categoryId="at.ac.tuwien.ifs.qse.tdd.commands.category"
@@ -67,12 +67,8 @@
             name="Extract Testcase Superclass">
       </command>
       <command
-            id="at.ac.tuwien.ifs.qse.tdd.commands.enableTdd"
-            name="Enable Tdd for Project">
-      </command>
-      <command
-            id="at.ac.tuwien.ifs.qse.tdd.commands.disableTdd"
-            name="Disable Tdd for Project">
+            id="at.ac.tuwien.ifs.qse.tdd.commands.enableDisableTdd"
+            name="Enable/Disable Tdd for Project">
       </command>
       <command
             id="at.ac.tuwien.ifs.qse.tdd.commands.createMock"
@@ -82,8 +78,8 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="at.ac.tuwien.ifs.qse.tdd.handlers.JumpToTest"
-            commandId="at.ac.tuwien.ifs.qse.tdd.commands.jumpToTest">
+            class="at.ac.tuwien.ifs.qse.tdd.handlers.JumpTo"
+            commandId="at.ac.tuwien.ifs.qse.tdd.commands.jumpTo">
       </handler>
       <handler
             class="at.ac.tuwien.ifs.qse.tdd.handlers.CreateTestClass"
@@ -94,12 +90,8 @@
             commandId="at.ac.tuwien.ifs.qse.tdd.commands.extractTestcaseSuperclass">
       </handler>
       <handler
-            class="at.ac.tuwien.ifs.qse.tdd.handlers.EnableTdd"
-            commandId="at.ac.tuwien.ifs.qse.tdd.commands.enableTdd">
-      </handler>
-      <handler
-            class="at.ac.tuwien.ifs.qse.tdd.handlers.DisableTdd"
-            commandId="at.ac.tuwien.ifs.qse.tdd.commands.disableTdd">
+            class="at.ac.tuwien.ifs.qse.tdd.handlers.EnableDisableTdd"
+            commandId="at.ac.tuwien.ifs.qse.tdd.commands.enableDisableTdd">
       </handler>
       <handler
             class="at.ac.tuwien.ifs.qse.tdd.handlers.CreateMock"
@@ -177,7 +169,7 @@
                </visibleWhen>
             </command>
             <command
-                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.jumpToTest"
+                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.jumpTo"
                   label="Jump to Class"
                   mnemonic="J"
                   style="push">
@@ -207,7 +199,7 @@
                </visibleWhen>
             </command>
             <command
-                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.jumpToTest"
+                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.jumpTo"
                   label="Jump to Test"
                   mnemonic="J"
                   style="push">
@@ -293,7 +285,7 @@
                   name="at.ac.tuwien.ifs.qse.tdd.separator3">
             </separator>
             <command
-                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.enableTdd"
+                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.enableDisableTdd"
                   label="Enable Tdd for Project"
                   style="push">
                <visibleWhen
@@ -323,7 +315,7 @@
                </visibleWhen>
             </command>
             <command
-                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.disableTdd"
+                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.enableDisableTdd"
                   label="Disable Tdd for Project"
                   style="push">
                <visibleWhen
@@ -422,7 +414,7 @@
                </visibleWhen>
             </command>
             <command
-                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.jumpToTest"
+                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.jumpTo"
                   label="Jump to Class"
                   mnemonic="J"
                   style="push">
@@ -452,7 +444,7 @@
                </visibleWhen>
             </command>
             <command
-                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.jumpToTest"
+                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.jumpTo"
                   label="Jump to Test"
                   mnemonic="J"
                   style="push">
@@ -534,6 +526,49 @@
                   </with>
                </visibleWhen>
             </command>
+            <separator
+                  name="at.ac.tuwien.ifs.qse.tdd.separator3">
+            </separator>
+            <command
+                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.enableDisableTdd"
+                  label="Enable Tdd for Project"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <iterate
+                           ifEmpty="false"
+                           operator="or">
+                        <not>
+                           <test
+                                 forcePluginActivation="true"
+                                 property="at.ac.tuwien.ifs.qse.tdd.hasTddNature">
+                           </test>
+                        </not>
+                     </iterate>
+                  </with>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="at.ac.tuwien.ifs.qse.tdd.commands.enableDisableTdd"
+                  label="Disable Tdd for Project"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <iterate
+                           ifEmpty="false"
+                           operator="or">
+                        <test
+                              forcePluginActivation="true"
+                              property="at.ac.tuwien.ifs.qse.tdd.hasTddNature">
+                        </test>
+                     </iterate>
+                  </with>
+               </visibleWhen>
+            </command>
          </menu>
       </menuContribution>
    </extension>
@@ -553,6 +588,21 @@
             id="at.ac.tuwien.ifs.qse.tdd.viewerContribution2"
             targetID="at.ac.tuwien.ifs.qse.tdd.viewerContribution2">
       </viewerContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="at.ac.tuwien.ifs.qse.tdd.commands.jumpTo"
+            contextId="org.eclipse.jdt.ui.javaEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="Ctrl+J">
+      </key>
+      <key
+            commandId="at.ac.tuwien.ifs.qse.tdd.commands.enableDisableTdd"
+            contextId="org.eclipse.jdt.ui.javaEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="Ctrl+A">
+      </key>
    </extension>
 
 </plugin>

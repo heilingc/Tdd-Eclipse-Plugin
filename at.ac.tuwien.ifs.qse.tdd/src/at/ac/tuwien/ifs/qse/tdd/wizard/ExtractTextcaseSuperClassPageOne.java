@@ -214,6 +214,8 @@ public class ExtractTextcaseSuperClassPageOne extends UserInputWizardPage implem
 
 	private String calculateSuggestedParentClassName(ICompilationUnit childClass) {
 	
+		//TODO: Use Settings instead expection TestClassname
+		
 		String childName = childClass.getElementName();
 		
 		String suffix = childName.substring(4);

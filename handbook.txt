@@ -1,0 +1,274 @@
+﻿Handbook of the Tdd-Eclipse-Plugin
+
+Introduction:
+
+The Test driven Development (TDD) is based on the idea to implement tests before
+the feature. This Plug-in supports the developer to learn and use the process of TDD. 
+
+Description:
+
+The Tdd-Eclipse-Plugin supports the developer to learn and use the TDD principles.
+It shows for every change of the code how much is covered by tests. If there is no
+test currently available for the changed class the plug-in informs you and gives 
+you also the possibility to create the test. 
+
+
+System-Requirements:
+
+	- Eclipse IDE (Eclipse Galileo SR2 3.5.2 or higher, www.eclipse.org)
+	- JUnit Eclipse Plug-in
+	- EclEmma (www.eclemma.org)
+	- Tdd-Eclipse-Plugin (http://github.com/heilingc/Tdd-Eclipse-Plugin)
+
+Install:
+
+	- Installation by Update-Site:
+
+	  Download the listed system-requirements. Unpack the Eclipse IDE and install the 
+	  EclEmma-Plugin as described on the project home page of EclEmma. After the 
+	  sucessfull install download the source code of the Tdd-Eclipse-Plugin from 
+	  GitHup or checkout the project. Start the Eclipse IDE and add the directory 
+	  “at.ac.tuwien.ifs.qse.tddupdatesite” as Update site and install the Plug-in.
+	  The Plug-in can’t be installed if the EclEmma is not already installed.
+
+	- Installation with Build Zip:
+
+	  Download the listed system-requirements. Unpack the Eclipse IDE and install the 
+	  EclEmma-Plugin as described on the project home page of EclEmma. Extract the 
+	  build zip in your eclipse path and restart eclipse. 
+
+Features:
+
+	- Automated execution of the associated JUnit-Tests and calculation of the code coverage
+	- Automated search of test/class files within the selected project or workspace
+	- Freely definable prefix and suffix of the test-classes
+	- Integrated create class/junit test class wizard
+	- Jump to test/class command
+	- Extract Test Superclass Refactoring
+	- Create Mock Template Wizard for JMock, Mockito and EasyMock
+
+How Do Use:
+
+	Before the plugin can be used for the project rightclick on the project and click on
+	Tdd/Enable Tdd for Project. Now everytime you save a file in this project all 
+	unit tests are executed and the code coverage is calculated by ecl emma.
+
+	You can disable this behavoir if you rightclick on the project again and you choose
+	Tdd/Disable Tdd for Project.
+
+	In the editor you can jump to the test and jump to the class backward when you
+	rightclick on the editor and choose Tdd/Jump to Test or Tdd/Jump to Class.
+	Alternatively you can also rightclick in the package explorer on any class
+	and choose Tdd/Jump to Test or Tdd/Jump to Class.
+
+	If no related class to the test exist or vice versa than instead you can create a
+	related class by right clicking on the class in the package explorer or in the editor
+	and choose Tdd/Create Class or Tdd/Create Test. A wizard will be opened with the right
+	default values.
+
+	The Tdd Plugin calculate the relation of class/test pairs by naming. If
+	your class have the name A your test must be named TestA per default.
+	(Under window/preference/tdd you can change tdd settings).
+
+	If you want to create out of an Unit Test a Integration Test the 
+	Extract Test Superclass Refactoring might be the right choice. Information
+	about this refactoring you can find at http://xunitpatterns.com/Testcase%20Superclass.html.
+	You can start the wizard by rightclicking on the test in the package explorer or in the editor
+	and you choose Tdd/Extract Testcase Superclass.
+
+	Sometimes it can be tricky to use a libary which you use rarely. The TDD Plugin can help you
+	by using Mocking Libraries. Rightclick on the editor and choose Tdd/Create Mock Template to open
+	a Wizard which allow you to generate mocking source. You have only name your constraints.
+	This feature can be used für JMock, Mockito and EasyMock. Generic Variables are not supported.
+
+Developer information:
+
+The following parts of the document contains information which helps to understand the design 
+of the Tdd-Eclipse-plugin.
+
+Requirements
+
+	- Eclipse IDE (Eclipse Galileo SR2 3.5.2 or higher, www.eclipse.org)
+	- JUnit Eclipse Plugin 
+	- EclEmma (www.eclemma.org)
+
+Preperation of the source code:
+Check out the source code of the Eclipse Plug-in on http://heilingc.github.com/Tdd-Eclipse-Plugin/
+and import the 3 Plug-ins as "Existing Projects into Workspace" to the Eclipse workspace.
+
+The Tdd-Eclipse-Plugin project consists of the following three plug-ins:
+	
+	1) at.ac.tuwien.ifs.qse.tdd
+	2) at.ac.tuwien.ifs.qse.tdd.feature
+	3) at.ac.tuwien.ifs.qse.tddupdatesite
+	4) at.ac.tuwien.ifs.qse.tdd.pde
+
+The first plug-in is the main plug-in. It contains all of the features. (2) and (3) plug-ins 
+are only needed to create the update site. (4) allow you to create a zip build. You have only to trigger
+build-tdd.sh or build-tdd.bat. The zip build can be founded at 
+temp/eclipse.build/1.TestBuild/at.ac.tuwien.ifs.qse.tdd-TestBuild.zip. Now you can give this build zip to
+anyone. The user only have to extract this zip build in his eclipse path to use the plug in.
+ 
+The main plug-in "at.ac.tuwien.ifs.qse.tdd":
+
+This plug-in is a classical Eclipse plug-in with UI contribution. It implements different
+extensions e.g. nature, builder, commands etc.
+
+Plug-in packages:
+
+	at.ac.tuwien.ifs.qse.tdd
+		This is the base package of the plug-in. It contains only the activator which has no further
+		improtance.
+
+	at.ac.tuwien.ifs.qse.tdd.builder
+		Here you can find the builder and the nature. The Builder is one of the central extensions
+		of the plug-in.The builder will always be called when the developer activate the build 
+		process of the project. This can be for example the Save-Action. 
+		The builder gets the information about which files have changed and he can react adequate.
+		The Nature in this package is the connector between the project and the plug-in.
+
+	at.ac.tuwien.ifs.qse.tdd.dialog
+		This package contains the plug-in dialogs like the warning dialog.
+
+	at.ac.tuwien.ifs.qse.tdd.exception
+		All the plug-in specific exception can be found here.
+
+	at.ac.tuwien.ifs.qse.tdd.finder
+		This package contains the core feature of the plug-in. Here can you find all the classes 
+		which implements the test/class search functions of the plug-in.
+
+	at.ac.tuwien.ifs.qse.tdd.handlers
+		All the needed handlers are located in this package.
+
+	at.ac.tuwien.ifs.qse.tdd.model
+		All needed models of the plugin are located in this package.
+
+	at.ac.tuwien.ifs.qse.tdd.model.mocking
+		All needed models for the Configuration of an Mock Template are located in this package
+
+	at.ac.tuwien.ifs.qse.tdd.model.mocking.library
+		All needed models for the Creation of an Mock Template are located in this package.
+
+	at.ac.tuwien.ifs.qse.tdd.preferences
+		The preference related classes are located here.
+
+	at.ac.tuwien.ifs.qse.tdd.propertyTester
+		This package contains the properyTester for this project. 
+
+	at.ac.tuwien.ifs.qse.tdd.refactoring
+		This package contains all refactoring classes and descriptions. At the moment only
+		the Extract Superclass Test Refactoring is contained. 
+
+	at.ac.tuwien.ifs.qse.tdd.wizard
+		This package contains all the wizard related classes.
+
+Important classes and interfaces:
+
+TddBuilder
+	The TddBuilder managed the call of the coverage. With every e.g. Save Action 
+	the function "build" of the Builder class will be called. The function forwards
+	the call to the "fullBuild" or "incrementalBuild" function.
+
+	Functions: 
+		- incrementalBuild
+		  Only the files which are changed will be included in the coverage call. 
+		  The first step of the function is to search for the Test class. If there can't be 
+		  found a related test a "SearchException" will be thrown and the whole coverage process
+		  will be aborted. If all needed files could be found the coverage process will be called.
+		- fullBuild
+		  This function does the same as the function "incrementalBuild" with the difference that
+		  the coverage process does include all files in the project not only the changed. 
+
+CoverageBuilderVisitor/ CoverageFullBuilderVisitor
+	The visitor saves all visited class which should be handled by the incrementalBuild/fullBuild
+	
+CoverageExecuter
+	This class is the point where the Tdd-Eclipse-Plugin accesses the API of the EclEmma Plug-in.
+	
+	Functions:
+	- executeFileCoverage
+		With the handover of an IType which should be covered the Tdd-Eclipse-Plugin launches 
+		the EclEmma coverage process.
+	- executeEditorCoverage
+		The function extracts the currently selected Editor and executes the coverage process 
+		for the underlining IType.
+
+TestFinder
+	This class implements different methods which help to find a class file in the 
+	project/workspace and to create the needed Test/Class names. Additional it helps
+	also to check which type a selected class has.
+	
+CreateTestClass
+	This class implements the call of the CreateClassWizard or the CreateTestWizard. 
+	It checks first which type the selected file has and then calls the right wizard.
+
+JumpToTest
+	This handler searchs the needed test/class and opens it. If there could
+	not be found any test a warning dialog will be showing up.
+
+EnableTdd / DisableTdd
+	This Handler enables or disables the builder for the selected project.
+
+TddFileHandler
+	This abstract class is the base of the other handlers and implements the logic
+	to check if the selected IType is part of a project wheere the Tdd-Eclipse-Plugin
+	is active.
+
+ExtractTestCaseSuperClassRefactoring
+	The Method createChange contain the whole Logic of the Extract Test Case Refactoring.
+
+IMockingLibrary
+	If you want to add support for a new mocking library create a new class which implements 
+	IMockingLibrary. Then make sure that MockingLibraryRegistration.getInstances() will return 
+	a list which contain an Instance of the new class.
+
+How can you set up a useful development enviroment:
+
+	- Decide where your delevlopement enviroment should be saved. In this How Do we prosume that this folder is called "TddPluginEnviroment".
+
+	- Create following folders in the "TddPluginEnviroment"
+		- ide
+			Place where your running enviroment is installed
+		- target
+			Place where your taget enviroment is installed. 
+		- workspace
+			Place where the TDD plugin is stored
+		- test (optional)
+			Place where your TDD plugin can be installed on a fresh enviroment and tested.
+
+	- Install following Applications and Plugins in following Folders
+		- ide:
+			- Eclipse for RCP/Plug-in Developers (Eclipse Galileo SR2 3.5.2 or higher, www.eclipse.org)
+			- EclEmma Plugin (http://www.eclemma.org/)
+				Allow you to calculate code coverage
+			- EGit Plugin (http://www.eclipse.org/egit/)
+				Allow you to use Git in Eclipse
+			- AST View (http://www.eclipse.org/jdt/ui/astview/index.php)
+				Allow you to inspect the Abstract Syntax Tree of any Java Code.
+		- target:
+			- Eclipse for RCP/Plug-in Developers (Eclipse Galileo SR2 3.5.2 or higher, www.eclipse.org)
+			- EclEmma Plugin (http://www.eclemma.org/)
+				Allow you to calculate code coverage
+		- test (optional):
+			- any Eclipse (Eclipse Galileo SR2 3.5.2 or higher, www.eclipse.org)
+
+	- Download TddPlugin	
+		- Start ide/eclipse
+		- Select as Workspace the folder "workspace"
+		- Import the Git Project by using the command File/Import/Git/Projects from Git (git://github.com/heilingc/Tdd-Eclipse-Plugin.git)
+
+	- Configure Eclipse
+		- Select Window/Preferences/Plugin-Development/Target Platform
+		- Press Add...
+		- Start with an empty target defintion
+		- Add the target Installation
+
+	- Run Application
+		- Click on the Button "Run Eclipse Application"
+
+Where can you find background information:
+	- Eclipse documentation: http://help.eclipse.org/galileo/index.jsp
+	- EclEmma documentation: http://www.eclemma.org/devdoc/index.html
+	- Article about the Refactoring Library: http://www.eclipse.org/articles/Article-LTK/ltk.html
+	- Article about Abstract Syntax Tree Manipulation: http://www.eclipse.org/articles/article.php?file=Article-JavaCodeManipulation_AST/index.html
+	- Book: Elipse Plug-ins - Third Edition - Eric Clayberg & Dan Rubel

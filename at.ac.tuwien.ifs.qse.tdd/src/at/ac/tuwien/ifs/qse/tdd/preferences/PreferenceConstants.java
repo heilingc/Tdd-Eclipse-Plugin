@@ -15,11 +15,12 @@ public class PreferenceConstants {
 	//Execute on
 	public static final String P_EXECUTEON = "TddExecuteOnPreference";
 	public static final String P_EXECUTEON_INC = "incremental"; 
-	public static final String P_EXECUTEON_BUILD = "buildall";
 	public static final String P_EXECUTEON_ALL = "all";
 	
 	//TestClass Wizard
 	public static final String P_SHOW_WARNING = "AutoGenerateTestClass";
+
+	public static final String P_DEFAULT_TEST_SOURCE_FOLDER = "TddDefaultTestSourceFolder";
 	
 	
 }

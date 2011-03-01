@@ -11,7 +11,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PartInitException;
 
 import at.ac.tuwien.ifs.qse.tdd.Activator;
-import at.ac.tuwien.ifs.qse.tdd.dialog.TddErrorDialog;
 import at.ac.tuwien.ifs.qse.tdd.exception.SearchException;
 import at.ac.tuwien.ifs.qse.tdd.finder.TestFinder;
 import at.ac.tuwien.ifs.qse.tdd.finder.TestFinder.FILETYPE;
@@ -21,7 +20,7 @@ import at.ac.tuwien.ifs.qse.tdd.preferences.PreferenceConstants;
 /**
  * Handler for the jumoToTestCommand
  */
-public class JumpToTest extends TddFileHandler {
+public class JumpTo extends TddFileHandler {
 
 	
 	@Override
@@ -73,19 +72,7 @@ public class JumpToTest extends TddFileHandler {
 
 	public void handleException(final SearchException exc,final String fileName){
 		
-		 //Load the preferences
-		String prefix = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_PREFIX);
-		String suffix = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_SUFFIX);
-	    
-		TestFinder finder = new TestFinder(prefix,suffix);
-		final FILETYPE type = finder.getTypeOfSearchName(fileName);
-		Display.getDefault().asyncExec(new Runnable() {
-		     public void run() {
-		    	 Dialog dialog = null;
-		    	 dialog = new TddErrorDialog(Display.getDefault().getActiveShell(),fileName,type);
-		  		 dialog.open();
-			 }
-		}); 
+		//Do Nothing
 	}
 
 	

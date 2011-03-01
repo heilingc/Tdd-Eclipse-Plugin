@@ -1,0 +1,53 @@
+14.10.2010 0,5 Praktikumstreffen
+17.10.2010 6   Git Plugin Downloaden und installieren
+               Repositoriy ins Eclipse geladen
+               Erstes Ausführen des Plugins
+               Codereview
+	       Maven installiert und begonnen POM zu erstellt, Ideen gesammelt
+18.10.2010 4   Entschieden Ant anstatt Maven zu verwenden
+               PDE Build File erstellt
+20.10.2010 1   Git eingerichtet und hochgeladen
+21.10.2010 0,5 Praktikumstreffen
+28.10.2010 2   Testen des Tdd Entwicklungs Plugin mit einem realen Beispiel.
+04.11.2010 6   Kontextmenü neu aufgebaut
+               Begonnen mit der Entkopplung von Model und UI
+05.11.2010 4   EclEmma Codecover Code und Javadoc überblickt
+               Begonnen mit dem Versuch eine EclEmma CodeCoverSession 
+auszulesen.
+16.11.2010 6   Refactoring
+17.11.2010 4   Refactoring
+24.11.2010 4   Eingelesen in Eclipse LTK und Eclipse JDT
+25.11.2010 0,5 Praktikumstreffen
+02.12.2010 6   Extract Testcase Superclass programmiert
+03.12.2010 6   Extract Testcase Superclass programmiert
+04.12.2010 6   Extract Testcase Superclass programmiert
+05.12.2010 6   Extract Testcase Superclass programmiert
+09.12.2010 0,5 Praktikumstreffen
+14.12.2010 5   Extract Testcase Superclass programmiert
+15.12.2010 6   Extract Testcase Superclass programmiert
+17.12.2010 1   Praktikumstreffen
+18.12.2010 4   Static Imports bei Extract Testcase Superclass eingebaut.
+19.12.2010 1   Protokolle geschrieben
+01.01.2011 3   Test durchgeführt
+02.01.2011 4   EclEmma Code studiert und festgestellt das iterative Berechnung mit angestrebter Granualität nicht funktioniert.
+05.01.2011 1   Praktikumstreffen
+12.01.2011 3   Syntax und Semantik der Mocking Libraries studiert und verglichen
+13.01.2011 5   Create Mock Template programmiert
+14.01.2011 5   Create Mock Template programmiert
+16.01.2011 4,5 Create Mock Template programmiert
+02.02.2011 5   Create Mock Template programmiert
+03.02.2011 3   Create Mock Template programmiert
+17.02.2011 2   Handbuch geschrieben
+17.02.2011 3   Navigation überarbeitet
+18.02.2011 1   Praktikumstreffen
+20.02.2011 5   Offene Punkte die durch den Usertest von Andreas Pieber entstanden sind abgearbeitet.
+22.02.2011 5   Offene Punkte die durch den Usertest von Andreas Pieber entstanden sind abgearbeitet.
+25.02.2011 4,5 Offene Punkte die durch den Usertest von Andreas Pieber entstanden sind abgearbeitet.
+26.02.2011 5   Offene Punkte die durch den Usertest von Andreas Pieber entstanden sind abgearbeitet.
+27.02.2011 3   Offene Punkte die durch den Usertest von Andreas Pieber entstanden sind abgearbeitet.
+01.03.2011 4   Update-Site mit den neuen Quellen eingerichtet
+
+SUMME      147
+
+                
+               	   

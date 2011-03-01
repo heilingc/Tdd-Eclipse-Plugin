@@ -1,11 +1,16 @@
 package at.ac.tuwien.ifs.qse.tdd.finder;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
@@ -27,40 +32,76 @@ public class CoverageExecuter {
 	 * Starts coverage for the IType.
 	 * @param lwType should include a class file which is a Junit test.
 	 */
-	public void executeFileCoverage(final List<IType> types) {
+	public void executeFileCoverage(final List<IType> units) {
 
-		if(types == null || types.size() == 0) {
+		if(units == null || units.size() == 0) {
 			return;
 		}
 		Display.getDefault().asyncExec(new Runnable() {
 
-			public void run() {
-				try {
-
+				public void run() {
+					
+					
+					try {
+						CoverageLaunchShortcut launchShortcut = new CoverageLaunchShortcut();
+						launchShortcut.setInitializationData(null, null,SHORT_CUT);
+						
+						HashSet<IPackageFragmentRoot> sourcefolders = new HashSet<IPackageFragmentRoot>();
+						
+						//Collect Sourcefolders out of types
+						for (IType unit : units) {
+							IPackageFragmentRoot sourcefolder = getPackageFragmentRoot(unit);
+							
+							if (sourcefolder != null) {
+								sourcefolders.add(sourcefolder);
+							}
+						}
+						
+						List<IPackageFragmentRoot> sourcefolderslist = new ArrayList<IPackageFragmentRoot>(sourcefolders);
+						
+						launchShortcut.launch(new StructuredSelection(sourcefolderslist), LAUNCH_MODE); //$NON-NLS-1$
+						
+					} catch (CoreException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} //$NON-NLS-1$
+					
+					
+					/*
+					try {
+						
+					
 					CoverageLaunchShortcut launchShortcut = new CoverageLaunchShortcut();
 					//Define which shortcut should be used
 					launchShortcut.setInitializationData(null, null,SHORT_CUT); //$NON-NLS-1$
-						
-					/*
-					List<ICompilationUnit> units = new ArrayList<ICompilationUnit>();
-					for (IType type : types) {
-						units.add(type.getCompilationUnit());
-					}
-					launchShortcut.launch(new StructuredSelection(units), LAUNCH_MODE);
-					*/
-					
-					for (IType type : types) {
-						ICompilationUnit lwCompilationUnit = type.getCompilationUnit();
-						if(lwCompilationUnit != null)
-							//Launch the coverage
-							
-							launchShortcut.launch(new StructuredSelection(lwCompilationUnit), LAUNCH_MODE); //$NON-NLS-1$
-					}
-				
-				} catch (CoreException ex) {
 
-				} 
-			}
+					for (IType type : types) {
+					ICompilationUnit lwCompilationUnit = type.getCompilationUnit();
+					if(lwCompilationUnit != null)
+					//Launch the coverage
+					launchShortcut.launch(new StructuredSelection(lwCompilationUnit), LAUNCH_MODE); //$NON-NLS-1$
+					}
+
+					} catch (CoreException ex) {
+
+					}
+					*/
+				}
+
+				private IPackageFragmentRoot getPackageFragmentRoot(
+						IJavaElement element) {
+					
+					if (element == null) {
+						return null;
+					}
+					
+					if (element instanceof IPackageFragmentRoot) {
+						return (IPackageFragmentRoot) element;
+					}
+					
+					return getPackageFragmentRoot(element.getParent());
+					
+				}
 		}); 
 
 	}

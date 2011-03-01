@@ -9,7 +9,6 @@ public class IllegalProjectType extends SearchException {
 
 	public IllegalProjectType(String message) {
 		super(message);
-		// TODO Auto-generated constructor stub
 	}
 
 }

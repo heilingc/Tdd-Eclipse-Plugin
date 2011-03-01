@@ -161,7 +161,7 @@ public class TestFinder {
 		}
 		
 		if(suffix.length() != 0) {
-			name = name.substring(0, name.length() - 1 - suffix.length());
+			name = name.substring(0, name.length() - suffix.length());
 		}
 		
 		return name;

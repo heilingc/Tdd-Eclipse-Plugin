@@ -48,7 +48,7 @@ public class CreateTestClass extends TddFileHandler {
 
 	
 	private void createTestClass(String fileName,String baseName){
-		TddTestCaseWizard wizard = new TddTestCaseWizard(fileName);
+		TddTestCaseWizard wizard = new TddTestCaseWizard(fileName, this.getProject());
 		if (getService().getSelection() instanceof IStructuredSelection) {
 			IStructuredSelection sel = (IStructuredSelection) getService().getSelection();
 			wizard.init(null, sel);

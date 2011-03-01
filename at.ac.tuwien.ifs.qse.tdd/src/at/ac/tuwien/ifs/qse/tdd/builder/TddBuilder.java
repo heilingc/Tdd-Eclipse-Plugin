@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.IType;
 
 import at.ac.tuwien.ifs.qse.tdd.Activator;
 import at.ac.tuwien.ifs.qse.tdd.exception.IHandleException;
+import at.ac.tuwien.ifs.qse.tdd.exception.NoTestFound;
 import at.ac.tuwien.ifs.qse.tdd.exception.SearchException;
 import at.ac.tuwien.ifs.qse.tdd.finder.CoverageBuilderVisitor;
 import at.ac.tuwien.ifs.qse.tdd.finder.CoverageExecuter;
@@ -46,20 +47,20 @@ public class TddBuilder extends IncrementalProjectBuilder implements IHandleExce
 		if(executeOn == null)
 			return null;
 
-		if (kind == FULL_BUILD) {
-			if(executeOn.equals(PreferenceConstants.P_EXECUTEON_ALL) ||executeOn.equals(PreferenceConstants.P_EXECUTEON_BUILD)){
-				fullBuild(getProject(), monitor);
-			}
-		} else {
-			if(executeOn.equals(PreferenceConstants.P_EXECUTEON_ALL) ||executeOn.equals(PreferenceConstants.P_EXECUTEON_INC)){
-				IResourceDelta delta = getDelta(getProject());
-				if (delta == null) {
-
-				} else {
-					incrementalBuild(delta, monitor);
-				}
-			}
+		if(executeOn.equals(PreferenceConstants.P_EXECUTEON_ALL)){
+			fullBuild(getProject(), monitor);
 		}
+		else if(executeOn.equals(PreferenceConstants.P_EXECUTEON_INC)){
+			
+			IResourceDelta delta = getDelta(getProject());
+			if (delta == null) {
+
+			} else {
+				incrementalBuild(delta, monitor);
+			}
+			
+		}
+	
 		return null;
 	}
 
@@ -94,24 +95,25 @@ public class TddBuilder extends IncrementalProjectBuilder implements IHandleExce
 	 	    try {
 	 	    	fileName = file.getName();
 	 	    	
-	 			
-	 	    	if(finder.getTypeOfSearchName(fileName).equals(FILETYPE.TESTCLASS)){
+	 	    	if(!finder.getTypeOfSearchName(fileName).equals(FILETYPE.TESTCLASS)){
 	 	    		continue;
 	 	    	}
 	 	    	
 	 	    	//Get TestName
-	 	    	String testName = finder.buildTestClassName(file.getName());
-	 			
+	 	    	String testName = testName = file.getName().replace(".java", "");
+	 	    	
 	 	    	//Get Search Scope
 	 	    	String scope = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_SCOPE);
 	 	    	
 	 	    	//Search the associated TestFile
 	 	    	IType type = finder.search(testName, project,SEARCHSCOPE.valueOf(scope));
+	 	    	
 	 	    	if(type != null) {
 	 	    		types.add(type);
 	 	    	}
 	 	    	
 	 	    } catch (SearchException e) {
+	 	    	e.printStackTrace();
 	 			handleException(e,fileName);
 	 			return;
 	 		}  
@@ -151,48 +153,40 @@ public class TddBuilder extends IncrementalProjectBuilder implements IHandleExce
 	 	    try {
 	 	    	fileName = file.getName();
 	 	    	
+	 	    	String testName;
+	 	    	
 	 	    	if(finder.getTypeOfSearchName(fileName).equals(FILETYPE.TESTCLASS)){
-	 	    		continue;
+	 	    		testName = file.getName().replace(".java", "");
+	 	    	}
+	 	    	else {
+		 	    	testName = finder.buildTestClassName(file.getName());
 	 	    	}
 	 	    	
-	 	    	//Get TestName
-	 	    	String testName = finder.buildTestClassName(file.getName());
 	 	    	//Get Scope
 	 	    	String scope = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_SCOPE);
 	 	    	
 	 	    	//Search the associated TestFile
 	 	    	IType type = finder.search(testName, delta.getResource().getProject(),SEARCHSCOPE.valueOf(scope));
 	 	    	if(type != null) {
-	 	    		//TODO getin
 	 	    		types.add(type);
 	 	    	}
+	 	    	
 	 	    		 	    	
 	 	    } catch (SearchException e) {
 	 			handleException(e,fileName);
 	 		}  
 		}
 	    //execute the coverage
-	    if(types.size() != 0)	
- 	    	executer.executeFileCoverage(types); 	
+	    if(types.size() == 1)	
+ 	    	executer.executeFileCoverage(types.get(0)); 	
+	    else {
+	    	System.err.println("Unexpected: More than one junit test founded by incrementalBuild");
+	    }
 	}
 	
 	@Override
 	public void handleException(final SearchException exc,final String fileName){
 	
-		/*
-		Display.getDefault().asyncExec(new Runnable() {
-		     public void run() {
-		    	  Dialog dialog = null;
-		    	  if (exc instanceof NoTestFound) {
-		  			dialog = new TddErrorDialog(Display.getDefault().getActiveShell(),fileName,FILETYPE.TESTCLASS);
-		  			dialog.open();
-			  	  } else {
-			  			
-			  	  }
-		     }
-		});
-		*/
-		
 	}
 	
 }

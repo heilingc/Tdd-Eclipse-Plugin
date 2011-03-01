@@ -7,7 +7,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import at.ac.tuwien.ifs.qse.tdd.exception.SearchException;
 import at.ac.tuwien.ifs.qse.tdd.model.TddPluginHandler;
 
-public class DisableTdd extends TddFileHandler {
+public class EnableDisableTdd extends TddFileHandler {
 
 	@Override
 	public void handleException(SearchException exc, String fileName) {
@@ -17,11 +17,13 @@ public class DisableTdd extends TddFileHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-
+		
 		IJavaProject project =  this.getProject();
 		
 		if (project != null) {
-			TddPluginHandler.setState(project.getProject(), false);
+			TddPluginHandler.setState(
+					project.getProject(), 
+					!TddPluginHandler.getState(project.getProject()));
 		}
 		
 		return null;

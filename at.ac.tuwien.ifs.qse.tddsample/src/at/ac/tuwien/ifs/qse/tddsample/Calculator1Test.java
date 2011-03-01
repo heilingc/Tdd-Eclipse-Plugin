@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import at.ac.tuwien.ifs.qse.tddsample.exception.SummandNullExc;
 
-public class TestCalculator1 {
+public class Calculator1Test {
 
 	@Test
 	public void testCalculator(){

@@ -44,16 +44,20 @@ public class TddPreferencePage	extends FieldEditorPreferencePage 	implements IWo
 		addField(editorPrefix);
 		addField(editorSuffix);
 		
+		StringFieldEditor editorDefaultTestSourceFolder = new StringFieldEditor(PreferenceConstants.P_DEFAULT_TEST_SOURCE_FOLDER, "Default Test Source Folder:", getFieldEditorParent()); 
+		
+		addSpacer(getFieldEditorParent());
+		
+		addField(editorDefaultTestSourceFolder);
+		
 		addSpacer(getFieldEditorParent());
 		//Generate Wizard
-		addField(new BooleanFieldEditor(PreferenceConstants.P_SHOW_WARNING,"Show class not found warnings",getFieldEditorParent()));
 			
 		addSpacer(getFieldEditorParent());
 		//Execute on
 		addField(new RadioGroupFieldEditor(PreferenceConstants.P_EXECUTEON,
 			"Execute on:",1,
-			new String[][] { { "&Incremental build", PreferenceConstants.P_EXECUTEON_INC }, {"&Build all",PreferenceConstants.P_EXECUTEON_BUILD
-				},{"&All", PreferenceConstants.P_EXECUTEON_ALL }
+			new String[][] { { "&Actual Shown File", PreferenceConstants.P_EXECUTEON_INC },{"&All Files", PreferenceConstants.P_EXECUTEON_ALL }
 			}, getFieldEditorParent()));
 		
 		
