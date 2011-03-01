@@ -1,75 +1,87 @@
-<!DOCTYPE html>
 <html>
-<head>
-  <meta charset='utf-8'>
-
-  <title>heilingc/Tdd-Eclipse-Plugin @ GitHub</title>
-
-  <style type="text/css">
-    body {
-      margin-top: 1.0em;
-      background-color: #4c2587;
-      font-family: "Helvetica,Arial,FreeSans";
-      color: #ffffff;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-    h1 { font-size: 3.8em; color: #b3da78; margin-bottom: 3px; }
-    h1 .small { font-size: 0.4em; }
-    h1 a { text-decoration: none }
-    h2 { font-size: 1.5em; color: #b3da78; }
-    h3 { text-align: center; color: #b3da78; }
-    a { color: #b3da78; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-    pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-  </style>
-</head>
-
-<body>
-  <a href="http://github.com/heilingc/Tdd-Eclipse-Plugin"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
-
-  <div id="container">
-
-    <div class="download">
-      <a href="http://github.com/heilingc/Tdd-Eclipse-Plugin/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/heilingc/Tdd-Eclipse-Plugin/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
-    </div>
-
-    <h1><a href="http://github.com/heilingc/Tdd-Eclipse-Plugin">Tdd-Eclipse-Plugin</a>
-      <span class="small">by <a href="http://github.com/heilingc">heilingc</a></span></h1>
-
-    <div class="description">
-      An Eclipse-Plugin which supports the Test-driven development technique.
-    </div>
-
-    <h2>Authors</h2>
-<p>Pircher Michael (e0327031@student.tuwien.ac.at)<br/>Christian Heiling (e0725230@student.tuwien.ac.at)<br/>      </p>
-
-
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="http://github.com/heilingc/Tdd-Eclipse-Plugin/zipball/master">zip</a> or
-      <a href="http://github.com/heilingc/Tdd-Eclipse-Plugin/tarball/master">tar</a> formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/heilingc/Tdd-Eclipse-Plugin</pre>
-    </p>
-
-    <div class="footer">
-      get the source code on GitHub : <a href="http://github.com/heilingc/Tdd-Eclipse-Plugin">heilingc/Tdd-Eclipse-Plugin</a>
-    </div>
-
-  </div>
-
-  
-</body>
+	<title>Tdd-Eclipse-Plugin</title>
 </html>
+
+<h1>Tdd-Eclipse-Plugin</h1>
+<h2>Introduction</h2>
+<p>
+The Test driven Development (TDD) is based on the idea to implement tests before
+the feature. This Plug-in supports the developer to learn and use the process of TDD. 
+</p>
+<h2>Description</h2>
+<p>
+The Tdd-Eclipse-Plugin supports the developer to learn and use the TDD principles.
+It shows for every change of the code how much is covered by tests. If there is no
+test currently available for the changed class the plug-in informs you and gives 
+you also the possibility to create the test. 
+</p>
+<h2>System-Requirements</h2>
+<ul>
+	<li>Eclipse IDE (Eclipse Galileo SR2 3.5.2 or higher, www.eclipse.org)</li>
+	<li>JUnit Eclipse Plug-in</li>
+	<li>EclEmma (www.eclemma.org)</li>
+</ul>
+<h2>Install</h2>
+<h3>Installation by Update-Site</h3>
+
+<ul>
+<li>Open Eclipse and click on Help/Install New Software ...</li>
+<li>Add following Site and follow the instructions: <a href="http://heilingc.github.com/Tdd-Eclipse-Plugin">http://heilingc.github.com/Tdd-Eclipse-Plugin</a></li>
+<li>The Plug-in can’t be installed if the EclEmma is not already installed.</li>
+</ul>
+
+<h3>Installation with Build Zip</h3>
+
+<ul>
+<li><a href="download/at.ac.tuwien.ifs.qse.tdd_1.0.2.zip">Download the TDD Plugin as .zip </a></li>
+<li>Extract archive in eclipse folder and restart eclipse</li>
+</ul>
+
+<h2>Features</h2>
+
+<ul>
+<li>Automated execution of the associated JUnit-Tests and calculation of the code coverage</li>
+<li>Automated search of test/class files within the selected project or workspace</li>
+<li>Freely definable prefix and suffix of the test-classes</li>
+<li>Integrated create class/junit test class wizard</li>
+<li>Jump to test/class command</li>
+<li>Extract Test Superclass Refactoring</li>
+<li>Create Mock Template Wizard for JMock, Mockito and EasyMock</li>
+</ul>
+
+<h2>How Do Use</h2>
+
+<p>	Before the plugin can be used for the project right click on the project and click on
+	Tdd/Enable Tdd for Project. Now every time you save a file in this project all 
+	unit tests are executed and the code coverage is calculated by ecl emma.
+</p>
+
+<p>	You can disable this behavior if you right click on the project again and you choose
+	Tdd/Disable Tdd for Project.
+</p>
+
+<p>
+	In the editor you can jump to the test and jump to the class backward when you
+	rightclick on the editor and choose Tdd/Jump to Test or Tdd/Jump to Class.
+	Alternatively you can also right click in the package explorer on any class
+	and choose Tdd/Jump to Test or Tdd/Jump to Class.
+</p><p>
+	If no related class to the test exist or vice versa than instead you can create a
+	related class by right clicking on the class in the package explorer or in the editor
+	and choose Tdd/Create Class or Tdd/Create Test. A wizard will be opened with the right
+	default values.
+</p><p>
+	The Tdd Plugin calculate the relation of class/test pairs by naming. If
+		   your class have the name A your test must be named ATest per default.
+		   (Under window/preference/tdd you can change tdd settings).
+</p><p>
+	If you want to create out of an Unit Test a Integration Test the 
+	Extract Test Superclass Refactoring might be the right choice. Information
+	about this refactoring you can find at <a href="http://xunitpatterns.com/Testcase%20Superclass.html">http://xunitpatterns.com/Testcase%20Superclass.html</a>.
+	You can start the wizard by rightclicking on the test in the package explorer or in the editor
+	and you choose Tdd/Extract Testcase Superclass.
+</p><p>
+	Sometimes it can be tricky to use a library which you use rarely. The TDD Plugin can help you
+	by using Mocking Libraries. Right click on the editor and choose Tdd/Create Mock Template to open
+	a Wizard which allow you to generate mocking source. You have only name your constraints.
+	This feature can be used for JMock, Mockito and EasyMock. Generic Variables are not supported.
