@@ -1,6 +1,0 @@
-Eigene Perspektive erstellen für TDD (JUnit TF Ergebnise und CodeCoverergebnise übereinander)
-Anzeigen im Icon ob für Comilation Unit das TDD aktiv ist oder nicht
-Kontextmenü "Jump to Test/Class" umbennenen in "Jump to TestCase" und in "Jump to Class" und nur die Methoden anzeigen wenn es ein gegenstück gibt
-Kontextmenü "Create Test/Class" umbennen in "Create Test" und nur anzeigen wenn kein Testfall zur Klasse existiert und es sich um keine Testklasse handelt.
-Zusätzliche Unterstützung für Mockingklassen, DBUnit, ...
-Durch das klicken eines Buttons soll der Buildprozess getriggert werden können.

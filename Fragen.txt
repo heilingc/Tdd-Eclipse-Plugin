@@ -1,1 +1,0 @@
-Zur welchen Version von Maven soll das POM kompatibel sein?
